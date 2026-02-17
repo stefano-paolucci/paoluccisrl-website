@@ -84,7 +84,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         <!-- Turnstile container (invisible). Non impatta sulla grafica -->
         <div
           id="turnstile-widget"
-          class="hidden"
+          class="mt-3"
           data-site-key={TURNSTILE_SITE_KEY || ""}>
         </div>
       </div>
@@ -172,6 +172,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         document.getElementById("turnstile-widget") as HTMLElement | null
       )?.dataset.siteKey || "";
     let widgetId: string | null = null;
+    let turnstileExecuting = false;
     let pendingResolve: ((t: string) => void) | null = null;
     let pendingReject: ((e: any) => void) | null = null;
 
@@ -194,14 +195,22 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       // @ts-ignore
       widgetId = window.turnstile.render("#turnstile-widget", {
         sitekey: siteKey,
-        size: "invisible",
+        execution: "execute",
         callback: (token: string) => {
+          turnstileExecuting = false;
           if (pendingResolve) pendingResolve(token);
           pendingResolve = null;
           pendingReject = null;
         },
         "error-callback": () => {
+          turnstileExecuting = false;
           if (pendingReject) pendingReject(new Error("Turnstile error"));
+          pendingResolve = null;
+          pendingReject = null;
+        },
+        "expired-callback": () => {
+          turnstileExecuting = false;
+          if (pendingReject) pendingReject(new Error("Turnstile token expired"));
           pendingResolve = null;
           pendingReject = null;
         },
@@ -218,6 +227,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         pendingReject = reject;
 
         const timeout = setTimeout(() => {
+          turnstileExecuting = false;
           pendingResolve = null;
           pendingReject = null;
           reject(new Error("Turnstile timeout"));
@@ -235,10 +245,19 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         pendingResolve = wrappedResolve;
         pendingReject = wrappedReject;
 
-        // @ts-ignore
-        window.turnstile.reset(id);
-        // @ts-ignore
-        window.turnstile.execute(id);
+        if (turnstileExecuting) {
+          wrappedReject(new Error("Turnstile already executing"));
+          return;
+        }
+
+        turnstileExecuting = true;
+        try {
+          // @ts-ignore
+          window.turnstile.execute(id);
+        } catch (error) {
+          turnstileExecuting = false;
+          wrappedReject(error);
+        }
       });
     };
 
