@@ -1,0 +1,544 @@
+---
+import CustomButton from "@/components/CustomButton.astro";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+const heroMediaType = (Astro.props.heroMediaType ?? "image") as "image" | "video";
+const heroImage = "/src/assets/images/banner_home.avif";
+const heroVideo = "/videos/test-video.mp4";
+
+const sideMedia = {
+  leftTop: "src/assets/images/mosaic_home/1.avif",
+  leftBottom: "src/assets/images/mosaic_home/2.avif",
+  rightTop: "src/assets/images/mosaic_home/3.avif",
+  rightBottom: "src/assets/images/mosaic_home/4.avif",
+};
+---
+
+<section class="home-hero-cinematic" id="homeHeroCinematicEn">
+  <div class="home-hero-cinematic__sticky">
+    <div class="home-hero-cinematic__stage">
+      <div class="home-hero-cinematic__main-media" data-main-media>
+        {
+          heroMediaType === "video" ? (
+            <video class="home-hero-cinematic__video" autoplay muted loop playsinline preload="metadata" poster={heroImage}>
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          ) : (
+            <OptimizedImage src={heroImage} alt="Schuco PVC windows" class="home-hero-cinematic__image" loading="eager" decoding="async" />
+          )
+        }
+      </div>
+
+      <figure class="home-hero-cinematic__card home-hero-cinematic__card--left-top" aria-hidden="true">
+        <OptimizedImage src={sideMedia.leftTop} alt="Window detail" class="home-hero-cinematic__card-image" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="home-hero-cinematic__card home-hero-cinematic__card--left-bottom" aria-hidden="true">
+        <OptimizedImage src={sideMedia.leftBottom} alt="Window detail" class="home-hero-cinematic__card-image" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="home-hero-cinematic__card home-hero-cinematic__card--right-top" aria-hidden="true">
+        <OptimizedImage src={sideMedia.rightTop} alt="Frame detail" class="home-hero-cinematic__card-image" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="home-hero-cinematic__card home-hero-cinematic__card--right-bottom" aria-hidden="true">
+        <OptimizedImage src={sideMedia.rightBottom} alt="Frame detail" class="home-hero-cinematic__card-image" loading="lazy" decoding="async" />
+      </figure>
+
+      <div class="home-hero-cinematic__overlay" aria-hidden="true"></div>
+
+      <div class="container relative z-20 h-full">
+        <div class="home-hero-cinematic__content">
+          <div class="home-hero-cinematic__eyebrow">Experience & Quality</div>
+<h1><strong>Comfort you can feel. Quality built to last.</strong></h1>
+<p>
+  Schüco PVC windows designed to protect, insulate and enhance every living space.
+  <br>
+  Our solutions deliver superior comfort, excellent insulation and lasting energy savings.
+</p>
+          <div class="home-hero-cinematic__actions">
+            <CustomButton class="btn-md" enable={true} label="REQUEST A QUOTE" variant="fill" url="/contact/" rel="" target="" />
+            <CustomButton class="btn-md border-white text-white hover:bg-white hover:text-dark" enable={true} label="DISCOVER THE COMPANY" variant="outline" url="/company/" rel="" target="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .home-hero-cinematic {
+      --hero-crop: 0;
+      --hero-text-exit: 0;
+      --hero-lt: 0;
+      --hero-lb: 0;
+      --hero-rt: 0;
+      --hero-rb: 0;
+      --hero-overlay-opacity: 1;
+      --hero-overlay-strength: 1.5;
+      --hero-bottom-overlay-strength: 1;
+      --hero-bottom-overlay-height: 60%;
+      --hero-bottom-overlay-soft-stop: 65%;
+      position: relative;
+      margin-top: 0;
+      padding-top: 0 !important;
+      height: 270svh;
+      background: #fff;
+      overflow: clip;
+      --hero-side-top: clamp(1rem, 5.2vh, 3.6rem);
+      --hero-side-gap: clamp(0.75rem, 1vw, 1rem);
+      --hero-lg-w: clamp(290px, 27vw, 560px);
+      --hero-lg-h: calc(var(--hero-lg-w) * 0.62);
+      --hero-sm-w: clamp(220px, 20vw, 420px);
+      --hero-sm-h: calc(var(--hero-sm-w) * 0.62);
+      --hero-center-inset-x: 34.5vw;
+      --hero-crop-top-final: calc(var(--hero-side-top) + (var(--hero-lg-h) * 0.5));
+      --hero-right-top: calc(var(--hero-side-top) + var(--hero-lg-h) + (var(--hero-side-gap) * 1.25));
+      --hero-right-bottom: calc(var(--hero-right-top) + var(--hero-sm-h) + var(--hero-side-gap));
+    }
+
+    html[data-theme="dark"] .home-hero-cinematic {
+      background: #262626;
+    }
+
+    .home-hero-cinematic__sticky {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .home-hero-cinematic__stage {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+
+    .home-hero-cinematic__main-media {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      overflow: hidden;
+      clip-path: inset(
+        calc(var(--hero-crop) * (var(--hero-crop-top-final) * 1.02))
+        calc(var(--hero-crop) * var(--hero-center-inset-x))
+        calc(var(--hero-crop) * 12vh)
+        calc(var(--hero-crop) * var(--hero-center-inset-x))
+        round calc(var(--hero-crop) * 0.9rem)
+      );
+      transform: scale(calc(1 + (var(--hero-crop) * 0.03)));
+      will-change: clip-path, transform;
+    }
+
+    .home-hero-cinematic__main-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: calc((1 - var(--hero-text-exit)) * var(--hero-overlay-opacity) * var(--hero-overlay-strength) * var(--hero-bottom-overlay-strength));
+      background: linear-gradient(
+        to top,
+        rgb(0 0 0 / 0.88) 0%,
+        rgb(0 0 0 / 0.52) calc(var(--hero-bottom-overlay-height) * 0.6),
+        rgb(0 0 0 / 0.18) var(--hero-bottom-overlay-height),
+        transparent var(--hero-bottom-overlay-soft-stop)
+      );
+      transition: opacity 120ms linear;
+    }
+
+    .home-hero-cinematic__image,
+    .home-hero-cinematic__video,
+    .home-hero-cinematic__card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .home-hero-cinematic__card {
+      position: absolute;
+      margin: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: none;
+      z-index: 4;
+      will-change: transform, opacity;
+    }
+
+    .home-hero-cinematic__card--left-top {
+      right: calc(100vw - var(--hero-center-inset-x) + var(--hero-side-gap));
+      top: var(--hero-side-top);
+      width: var(--hero-lg-w);
+      height: var(--hero-lg-h);
+      opacity: var(--hero-lt);
+      transform: translate3d(calc((-30vw) + (var(--hero-lt) * 30vw)), calc(3.2vh - (var(--hero-lt) * 3.2vh)), 0);
+    }
+
+    .home-hero-cinematic__card--left-bottom {
+      right: calc(100vw - var(--hero-center-inset-x) + var(--hero-side-gap));
+      top: calc(var(--hero-side-top) + var(--hero-lg-h) + var(--hero-side-gap));
+      width: var(--hero-sm-w);
+      height: var(--hero-sm-h);
+      opacity: var(--hero-lb);
+      transform: translate3d(calc((-34vw) + (var(--hero-lb) * 34vw)), calc(5.2vh - (var(--hero-lb) * 5.2vh)), 0);
+    }
+
+    .home-hero-cinematic__card--right-top {
+      left: calc((100vw - var(--hero-center-inset-x)) + var(--hero-side-gap));
+      top: var(--hero-right-top);
+      width: var(--hero-sm-w);
+      height: var(--hero-sm-h);
+      opacity: var(--hero-rt);
+      transform: translate3d(calc(30vw - (var(--hero-rt) * 30vw)), calc(3.2vh - (var(--hero-rt) * 3.2vh)), 0);
+    }
+
+    .home-hero-cinematic__card--right-bottom {
+      left: calc((100vw - var(--hero-center-inset-x)) + var(--hero-side-gap));
+      top: var(--hero-right-bottom);
+      width: var(--hero-lg-w);
+      height: var(--hero-lg-h);
+      opacity: var(--hero-rb);
+      transform: translate3d(calc(34vw - (var(--hero-rb) * 34vw)), calc(5.2vh - (var(--hero-rb) * 5.2vh)), 0);
+    }
+
+    .home-hero-cinematic__overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+
+    .home-hero-cinematic__content {
+      position: relative;
+      max-width: min(820px, 92vw);
+      margin-inline: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      z-index: 20;
+      gap: 1.2rem;
+      transform: translateY(calc(var(--hero-text-exit) * -52px));
+      opacity: calc(1 - (var(--hero-text-exit) * 1.3));
+      filter: blur(calc(var(--hero-text-exit) * 8px));
+      will-change: transform, opacity, filter;
+    }
+
+    .home-hero-cinematic__eyebrow {
+      border: 1px solid rgb(255 255 255 / 0.35);
+      background: rgba(13, 13, 13, 0.328);
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+    }
+
+    .home-hero-cinematic__content h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 5vw, 5.2rem);
+      line-height: 1.04;
+      text-wrap: balance;
+      font-weight: 500;
+      color: #fff;
+      text-shadow:
+        0 14px 20px rgb(0 0 0 / 0.62),
+        0 4px 16px rgb(0 0 0 / 0.62);
+    }
+
+    .home-hero-cinematic__content p {
+      margin: 0;
+      max-width: 64ch;
+      font-size: clamp(1rem, 1vw + 0.62rem, 1.25rem);
+      line-height: 1.7;
+      color: rgb(255 255 255 / 0.9);
+      text-wrap: pretty;
+      text-shadow:
+        0 3px 6px rgb(0 0 0 / 1);
+    }
+
+    .home-hero-cinematic__actions {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.95rem;
+      justify-content: center;
+    }
+
+    .home-hero-cinematic__actions :global(a.btn.btn-outline) {
+      border-color: rgb(255 255 255 / 0.42) !important;
+      background: rgb(255 255 255 / 0.1) !important;
+      color: #fff !important;
+    }
+
+    .home-hero-cinematic__actions :global(a.btn.btn-outline:hover) {
+      background: #fff !important;
+      color: #0f172a !important;
+    }
+
+    @media (max-width: 1279px) {
+      .home-hero-cinematic {
+        height: auto;
+        padding: 0.75rem 1rem 2rem;
+      }
+
+      .home-hero-cinematic__sticky {
+        position: relative;
+        height: auto;
+        overflow: visible;
+      }
+
+      .home-hero-cinematic__stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .home-hero-cinematic__overlay {
+        display: none;
+      }
+
+      .home-hero-cinematic__main-media,
+      .home-hero-cinematic__card {
+        position: relative;
+        inset: auto;
+        top: auto;
+        right: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        transform: none;
+        opacity: 1;
+        clip-path: none;
+        aspect-ratio: 16 / 10;
+      }
+
+      .home-hero-cinematic__main-media {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        aspect-ratio: 3 / 4;
+        border-radius: 1rem;
+        overflow: hidden;
+      }
+
+      .home-hero-cinematic__card--left-top {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .home-hero-cinematic__card--left-bottom {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .home-hero-cinematic__card--right-top {
+        grid-column: 3;
+        grid-row: 1;
+      }
+
+      .home-hero-cinematic__card--right-bottom {
+        grid-column: 3;
+        grid-row: 2;
+      }
+
+      .home-hero-cinematic__content {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        height: auto;
+        min-height: 0;
+        align-items: flex-start;
+        text-align: left;
+        color: #0f172a;
+        transform: none;
+        opacity: 1;
+        filter: none;
+        margin: 0;
+        max-width: 100%;
+        padding: 0.25rem 0 0.5rem;
+      }
+
+      .home-hero-cinematic__content p {
+        color: rgb(15 23 42 / 0.84);
+      }
+
+      .home-hero-cinematic__eyebrow {
+        border-color: rgb(15 23 42 / 0.16);
+        background: rgb(15 23 42 / 0.06);
+        color: #0f172a;
+      }
+
+      .home-hero-cinematic__actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .home-hero-cinematic {
+        padding: 0.75rem 0.9rem 1.5rem;
+      }
+
+      .home-hero-cinematic__stage {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        gap: 0.85rem;
+      }
+
+      .home-hero-cinematic__main-media {
+        grid-column: 1;
+        grid-row: 1;
+        aspect-ratio: 4 / 5;
+      }
+
+      .home-hero-cinematic__content {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: end;
+        z-index: 15;
+        color: #fff;
+        padding: 1rem;
+        background: linear-gradient(180deg, rgb(2 6 11 / 0) 15%, rgb(2 6 11 / 0.66) 80%);
+        border-radius: 1rem;
+      }
+
+      .home-hero-cinematic__content p {
+        color: rgb(255 255 255 / 0.9);
+      }
+
+      .home-hero-cinematic__eyebrow {
+        border-color: rgb(255 255 255 / 0.35);
+        background: rgb(255 255 255 / 0.14);
+        color: #fff;
+      }
+
+      .home-hero-cinematic__card--left-top {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .home-hero-cinematic__card--left-bottom {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .home-hero-cinematic__card--right-top {
+        grid-column: 1;
+        grid-row: 4;
+      }
+
+      .home-hero-cinematic__card--right-bottom {
+        grid-column: 1;
+        grid-row: 5;
+      }
+
+      .home-hero-cinematic__actions {
+        width: 100%;
+      }
+
+      .home-hero-cinematic__actions :global(a.btn) {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero-cinematic {
+        height: auto;
+      }
+
+      .home-hero-cinematic__sticky {
+        position: relative;
+        height: auto;
+      }
+
+      .home-hero-cinematic__main-media,
+      .home-hero-cinematic__content,
+      .home-hero-cinematic__card {
+        transform: none;
+        opacity: 1;
+        filter: none;
+        clip-path: none;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    const hero = document.getElementById("homeHeroCinematicEn");
+
+    if (hero) {
+      const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+      const FINAL_SCROLL_STEPS = 0;
+      const STEP_SCROLL_WEIGHT = 0.018;
+      const desktopQuery = window.matchMedia("(min-width: 1280px)");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let ticking = false;
+
+      function setStaticMode() {
+        hero.style.setProperty("--hero-crop", "0");
+        hero.style.setProperty("--hero-text-exit", "0");
+        hero.style.setProperty("--hero-lt", "1");
+        hero.style.setProperty("--hero-lb", "1");
+        hero.style.setProperty("--hero-rt", "1");
+        hero.style.setProperty("--hero-rb", "1");
+        hero.style.setProperty("--hero-overlay-opacity", "0");
+      }
+
+      function getProgress() {
+        const rect = hero.getBoundingClientRect();
+        const scrollRange = Math.max(1, hero.offsetHeight - window.innerHeight);
+        const travelled = clamp(-rect.top, 0, scrollRange);
+        return travelled / scrollRange;
+      }
+
+      function easeRange(value, start, end) {
+        const t = clamp((value - start) / Math.max(0.0001, end - start));
+        return t * t * (3 - 2 * t);
+      }
+
+      function render(progress) {
+        const crop = easeRange(progress, 0.02, 0.9);
+        const textExit = easeRange(progress, 0.02, 0.45);
+        const sideTop = easeRange(progress, 0.2, 0.92);
+        const sideBottom = easeRange(progress, 0.28, 0.98);
+        const overlay = 0.62 - crop * 0.47;
+
+        hero.style.setProperty("--hero-crop", crop.toFixed(4));
+        hero.style.setProperty("--hero-text-exit", textExit.toFixed(4));
+        hero.style.setProperty("--hero-lt", sideTop.toFixed(4));
+        hero.style.setProperty("--hero-rt", sideTop.toFixed(4));
+        hero.style.setProperty("--hero-lb", sideBottom.toFixed(4));
+        hero.style.setProperty("--hero-rb", sideBottom.toFixed(4));
+        hero.style.setProperty("--hero-overlay-opacity", clamp(overlay, 0.12, 0.62).toFixed(4));
+      }
+
+      function update() {
+        ticking = false;
+        if (!desktopQuery.matches || reducedMotion.matches) {
+          setStaticMode();
+          return;
+        }
+        const rawProgress = getProgress();
+        if (FINAL_SCROLL_STEPS <= 0) {
+          render(rawProgress);
+          return;
+        }
+        const finalHold = clamp(FINAL_SCROLL_STEPS * STEP_SCROLL_WEIGHT, 0, 0.72);
+        const normalizedProgress = clamp(rawProgress / (1 - finalHold));
+        render(normalizedProgress);
+      }
+
+      function requestUpdate() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+
+      update();
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate, { passive: true });
+      desktopQuery.addEventListener("change", requestUpdate);
+      reducedMotion.addEventListener("change", requestUpdate);
+    }
+  </script>
+</section>

@@ -1,0 +1,179 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+---
+
+<section
+  id="featuresSectionEn"
+  class="py-14 text-[#262626] md:py-20 dark:text-white">
+  <h1
+    class="mx-auto mb-2 text-center font-bold sm:text-6xl md:text-6xl lg:mb-5 lg:text-7xl">
+    The right choice changes everything.
+  </h1>
+  <h2
+    class="mx-auto mb-4 text-center sm:text-6xl md:text-2xl lg:mb-20 lg:text-3xl">
+    We work to standards that leave no room for compromise.
+  </h2>
+  <div class="mx-auto w-full max-w-425 px-4 sm:px-6 lg:px-10">
+    <div
+      id="featuresCarouselEn"
+      class="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4">
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/logo.svg"
+          alt="Experience you can rely on"
+          class="aspect-4/3 w-full rounded-xl !bg-white object-contain p-6"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Experience you can trust
+        </h5>
+        <p class="feature-card-body mb-6">
+          Years of production, installation, and completed projects have taught us
+          one thing: quality is never accidental.
+          <br />
+          Every window and door is built on proven expertise and tightly controlled
+          processes from start to finish. That is how we deliver security, reliability,
+          and performance that lasts.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/dettaglio.avif"
+          alt="Craft in every detail"
+          class="aspect-4/3 w-full rounded-xl object-cover"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Details define the result
+        </h5>
+        <p class="feature-card-body mb-6">
+          We go far beyond technical performance.<br />
+          We focus on finishes, alignment, assembly, and millimetric precision.<br />
+          Because true quality lives in the details you may not notice at first,
+          but appreciate for years.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/madeinitaly.svg"
+          alt="Proudly Made in Italy"
+          class="aspect-4/3 w-full rounded-xl !bg-white object-contain p-6"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Proud to be Made in Italy
+        </h5>
+        <p class="feature-card-body mb-6">
+          We craft every frame in house, combining advanced technology with
+          artisan-level care.<br />
+          From design to final build, every phase is under our direct control.
+          A Paolucci window is not just a product. It is the expression of an
+          Italian quality chain you can feel every day.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="public/images/customer_care.avif"
+          alt="Support that stays with you"
+          class="aspect-4/3 w-full rounded-xl object-cover"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Support that stays with you
+        </h5>
+        <p class="feature-card-body mb-6">
+          Our work does not end when installation is complete.<br />
+          We provide after-sales care, technical support, and real availability
+          whenever you need us.<br />
+          Choosing Paolucci means having a trusted partner over time.
+        </p>
+      </article>
+    </div>
+
+    <div class="mt-6 flex items-center justify-center gap-3 md:hidden">
+      <button
+        type="button"
+        data-carousel-prev="featuresCarouselEn"
+        aria-label="Previous card"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d0d0d0] bg-white shadow-xs transition hover:bg-[#f2f2f2]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="m15 6-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+          </path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-carousel-next="featuresCarouselEn"
+        aria-label="Next card"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d0d0d0] bg-white shadow-xs transition hover:bg-[#f2f2f2]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="m9 6 6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const carousel = document.getElementById("featuresCarouselEn");
+    if (!carousel) return;
+
+    const prev = document.querySelector(
+      '[data-carousel-prev="featuresCarouselEn"]',
+    );
+    const next = document.querySelector(
+      '[data-carousel-next="featuresCarouselEn"]',
+    );
+
+    const step = () => carousel.clientWidth + 20;
+
+    prev?.addEventListener("click", () => {
+      carousel.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+
+    next?.addEventListener("click", () => {
+      carousel.scrollBy({ left: step(), behavior: "smooth" });
+    });
+  })();
+</script>
+
+<style is:global>
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>

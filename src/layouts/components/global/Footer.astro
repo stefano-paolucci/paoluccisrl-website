@@ -1,0 +1,147 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import CustomButton from "@/components/CustomButton.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+
+const locale = (Astro.currentLocale || "it").toLowerCase();
+const isItalian = locale.startsWith("it");
+const year = new Date().getFullYear();
+const companyPath = isItalian ? "/azienda/" : "/company/";
+---
+
+<footer class="site-footer relative">
+  <div class="container">
+    <div class="flex flex-col gap-8 py-10 text-center md:py-12 lg:text-left">
+      <div class="flex flex-col items-center justify-between gap-8 lg:flex-row lg:items-center">
+        <a href={getLocaleUrlCTM("/", Astro.currentLocale)} class="inline-flex justify-center">
+          <OptimizedImage
+            src="/logos/logo_wide.svg"
+            alt="Paolucci SRL"
+            class="footer-logo-light h-20 w-auto"
+          />
+          <OptimizedImage
+            src="/logos/logo_wide_white.svg"
+            alt="Paolucci SRL"
+            class="footer-logo-dark h-20 w-auto"
+          />
+        </a>
+
+        <nav aria-label="Footer navigation" class="w-full lg:w-auto">
+          <ul class="footer-nav flex flex-wrap items-center justify-center gap-6 text-lg md:gap-14 lg:justify-end">
+            <li>
+              <a href={getLocaleUrlCTM("/", Astro.currentLocale)}>
+                {isItalian ? "Home" : "Home"}
+              </a>
+            </li>
+            <li>
+              <a href={getLocaleUrlCTM(companyPath, Astro.currentLocale)}>
+                {isItalian ? "Azienda" : "Company"}
+              </a>
+            </li>
+            <li>
+              <a href={getLocaleUrlCTM("/contact/", Astro.currentLocale)}>
+                {isItalian ? "Contatti" : "Contact"}
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center justify-center gap-4">
+          <a
+            href="https://www.facebook.com/paoluccisrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            class="footer-social inline-flex h-10 w-10 items-center justify-center rounded-full">
+            <OptimizedImage
+              inlineSvg={true}
+              src="/images/facebook-icon.svg"
+              alt="Facebook"
+              class="h-5 w-5"
+            />
+          </a>
+
+          <CustomButton
+            class="btn-primary"
+            hoverEffect="text-flip"
+            variant="fill"
+            url={getLocaleUrlCTM("/contact/", Astro.currentLocale)}
+            label={isItalian ? "RICHIEDI PREVENTIVO" : "REQUEST A QUOTE"}
+          />
+        </div>
+
+        <p class="footer-copy text-base text-center lg:text-left">
+          {
+            isItalian
+              ? `Copyright © ${year} Paolucci SRL. Tutti i diritti riservati.`
+              : `Copyright © ${year} Paolucci SRL. All rights reserved.`
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: #ffffff;
+  }
+
+  .footer-divider {
+    height: 1px;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-dark) 26%, transparent);
+  }
+
+  .footer-nav a {
+    color: #333333;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .footer-social {
+    background-color: #333333;
+    color: #ffffff;
+  }
+
+  .footer-social :global(svg),
+  .footer-social :global(svg *) {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .footer-logo-dark {
+    display: none;
+  }
+
+  html[data-theme="dark"] .site-footer {
+    background-color: #262626;
+  }
+
+  html[data-theme="dark"] .footer-divider {
+    background: rgba(255, 255, 255, 0.24);
+  }
+
+  html[data-theme="dark"] .footer-nav a {
+    color: #ffffff;
+  }
+
+  html[data-theme="dark"] .footer-social {
+    background-color: #262626;
+    color: #ffffff;
+  }
+
+  html[data-theme="dark"] .footer-logo-light {
+    display: none;
+  }
+
+  html[data-theme="dark"] .footer-logo-dark {
+    display: block;
+  }
+</style>

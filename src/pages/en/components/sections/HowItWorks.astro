@@ -1,0 +1,180 @@
+---
+/**
+ * HowItWorks3Steps.astro
+ * - Large icons
+ * - No buttons/links/pills
+ * - Clean layout: icon on top, title, concise copy
+ * - Marketing-focused copy with SEO intent
+ */
+const steps = [
+  {
+    phase: "Step 01",
+    title: "On-site survey and consultation",
+    desc:
+      "We listen to your goals, take precise measurements, and define the best solution for comfort, insulation, and design.",
+    icon: "map",
+  },
+  {
+    phase: "Step 02",
+    title: "Custom CNC manufacturing",
+    desc:
+      "We craft Schuco PVC windows and doors with millimeter-level precision, premium finishes, and strict in-house quality control.",
+    icon: "cnc",
+  },
+  {
+    phase: "Step 03",
+    title: "Certified professional installation",
+    desc:
+      "Installation is completed to the highest standard to deliver airtight performance, long-term durability, and lasting peace of mind.",
+    icon: "shield",
+  },
+];
+---
+
+<div class="how-it-works">
+  <div class="mx-auto max-w-6xl px-6 py-16 md:py-20">
+    <div class="text-center">
+      <p class="hiw-muted text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm">
+        A clear process
+      </p>
+
+      <h2 class="hiw-main mt-4 text-[clamp(1.8rem,3.3vw,3.1rem)] leading-[1.08] font-semibold tracking-[-0.01em]">
+        Three steps. One goal: complete peace of mind.
+      </h2>
+
+      <p class="hiw-muted mx-auto mt-4 max-w-3xl text-base leading-relaxed sm:text-lg">
+        From the first consultation to post-installation support, we stay by your side at every stage.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {steps.map((s) => (
+        <article class="how-it-works__card relative rounded-3xl border p-8">
+          <div class="flex flex-col items-center text-center">
+            <div class="how-it-works__icon-shell grid h-20 w-20 place-items-center rounded-3xl border">
+              {s.icon === "map" && (
+                <svg
+                  class="how-it-works__icon h-10 w-10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 21s7-5 7-11a7 7 0 1 0-14 0c0 6 7 11 7 11Z"></path>
+                  <circle cx="12" cy="10" r="2.5"></circle>
+                </svg>
+              )}
+
+              {s.icon === "cnc" && (
+                <svg
+                  class="how-it-works__icon h-10 w-10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 7h16"></path>
+                  <path d="M7 7v10"></path>
+                  <path d="M17 7v10"></path>
+                  <path d="M6 17h12"></path>
+                  <path d="M12 7v6"></path>
+                  <path d="M10.5 13h3"></path>
+                  <path d="M9 20h6"></path>
+                </svg>
+              )}
+
+              {s.icon === "shield" && (
+                <svg
+                  class="how-it-works__icon h-10 w-10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 2 20 6v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4Z"></path>
+                  <path d="M9.2 12.2 11 14l3.8-4"></path>
+                </svg>
+              )}
+            </div>
+
+            <p class="hiw-muted mt-5 text-xs font-semibold tracking-[0.28em] uppercase">
+              {s.phase}
+            </p>
+
+            <h3 class="hiw-main mt-3 text-xl font-semibold tracking-[-0.01em]">
+              {s.title}
+            </h3>
+
+            <p class="hiw-muted mt-3 max-w-[34ch] text-sm leading-relaxed sm:text-base">
+              {s.desc}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mx-auto mt-10 max-w-4xl text-center">
+      <p class="hiw-muted text-sm leading-relaxed sm:text-base">
+        The outcome is simple: <strong class="hiw-main">more comfort, greater precision, longer-lasting performance</strong>.<br/>
+        A proven method for homeowners who want windows and doors they can rely on.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .how-it-works {
+    --hiw-bg: #ffffff;
+    --hiw-card-bg: #ffffff;
+    --hiw-main: #262626;
+    --hiw-muted: rgb(38 38 38 / 0.72);
+    --hiw-border: rgb(0 0 0 / 0.1);
+    --hiw-icon-bg: rgb(0 0 0 / 0.03);
+    --hiw-icon: rgb(0 0 0 / 0.85);
+    --hiw-shadow: 0 10px 35px -20px rgb(0 0 0 / 0.35);
+    background: var(--hiw-bg);
+  }
+
+  html[data-theme="dark"] .how-it-works {
+    --hiw-bg: #262626;
+    --hiw-card-bg: #202224;
+    --hiw-main: #ffffff;
+    --hiw-muted: rgb(255 255 255 / 0.84);
+    --hiw-border: rgb(255 255 255 / 0.2);
+    --hiw-icon-bg: rgb(255 255 255 / 0.08);
+    --hiw-icon: rgb(255 255 255 / 0.9);
+    --hiw-shadow: 0 10px 35px -20px rgb(0 0 0 / 0.55);
+  }
+
+  .hiw-main {
+    color: var(--hiw-main);
+  }
+
+  .hiw-muted {
+    color: var(--hiw-muted);
+  }
+
+  .how-it-works__card {
+    background: var(--hiw-card-bg);
+    border-color: var(--hiw-border);
+    box-shadow: var(--hiw-shadow);
+  }
+
+  .how-it-works__icon-shell {
+    border-color: var(--hiw-border);
+    background: var(--hiw-icon-bg);
+  }
+
+  .how-it-works__icon {
+    color: var(--hiw-icon);
+  }
+</style>

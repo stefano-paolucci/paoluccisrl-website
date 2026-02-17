@@ -1,0 +1,87 @@
+# Site Configuration
+[site]
+  title            = "Paolucci SRL"
+  description      = "Paolucci SRL produce infissi in PVC Schuco su misura, con posa qualificata e assistenza dedicata."
+  tagline          = "Infissi in PVC su misura"
+  taglineSeparator = ""
+  baseUrl          = "https://www.paoluccisrl.com"
+  logo             = "/logos/p.svg"
+  logoText         = "Paolucci SRL"
+  logoWidth        = "2rem"
+  logoHeight       = "2rem"
+  trailingSlash    = true
+
+  [site.favicon]
+    path  = "/images/favicons"
+    image = "/images/logo.svg"
+
+[seo]
+  author = "Paolucci SRL"
+  keywords = [
+    "infissi pvc",
+    "serramenti pvc",
+    "paolucci srl",
+    "finestre schuco",
+  ]
+  robots = "index, follow"
+
+  [seo.robotsTxt]
+    enable   = true
+    disallow = []
+
+  [seo.sitemap]
+    enable  = true
+    exclude = []
+
+[settings]
+  blogFolder        = "blog"
+  integrationFolder = "integration"
+  careerFolder      = "career"
+
+  pagination   = 6
+  stickyHeader = true
+
+  contactFormAction   = "https://formsubmit.co/info@paoluccisrl.com"
+  contactFormProvider = "formsubmit.co"
+
+  brandName         = "Paolucci SRL"
+  footerDescription = ""
+
+  [settings.copyright]
+    enable = true
+    text   = ""
+
+  [settings.subscription]
+    enable     = false
+    title      = ""
+    formAction = ""
+
+  [settings.multilingual]
+    enable               = true
+    defaultLanguage      = "it"
+    disableLanguages     = []
+    showDefaultLangInUrl = false
+
+  [settings.navigationButton]
+    enable = true
+    label  = ""
+    url    = "/contact/"
+
+  [settings.markup.tableOfContents]
+    enable     = true
+    expanded   = true
+    endLevel   = 5
+    ordered    = false
+    startLevel = 1
+
+[opengraph]
+  image       = "/images/og-image.jpg"
+  ogLocale    = "it_IT"
+  ogType      = "website"
+  twitter     = ""
+  twitterCard = "summary_large_image"
+
+[head]
+  content = """
+  <script defer src="/umami.is.js" data-website-id=""></script>
+  """

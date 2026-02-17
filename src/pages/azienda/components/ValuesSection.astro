@@ -1,0 +1,23 @@
+---
+import Icons from "@/helpers/Icons.astro";
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+---
+
+<section>
+  <div class="container space-y-10 md:space-y-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="has-italic-text capitalize">
+        <AnimatedText delay={0.2} stagger={0.09} content="I nostri <strong>valori</strong>" />
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div data-aos="fade-up-sm" data-aos-delay="50" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="BadgeCheck" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Qualita</h3><p class="opacity-80">Selezioniamo materiali e componenti affidabili per risultati duraturi.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="100" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Ruler" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Precisione</h3><p class="opacity-80">Ogni infisso viene realizzato su misura con attenzione ai dettagli.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="150" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Shield" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Affidabilita</h3><p class="opacity-80">Rispettiamo tempi, impegni e standard di posa qualificata.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="200" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="MessageSquare" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Ascolto</h3><p class="opacity-80">Partiamo dalle esigenze reali del cliente per proporre la soluzione migliore.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="250" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Lightbulb" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Innovazione</h3><p class="opacity-80">Aggiorniamo costantemente processi e tecnologie produttive.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="300" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Handshake" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Responsabilita</h3><p class="opacity-80">Lavoriamo con trasparenza e attenzione al risultato finale.</p></div></div>
+    </div>
+  </div>
+</section>

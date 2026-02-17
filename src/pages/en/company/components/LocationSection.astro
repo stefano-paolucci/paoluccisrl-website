@@ -1,0 +1,27 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+---
+
+<section>
+  <div class="container space-y-10 md:space-y-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="has-italic-text capitalize">
+        <AnimatedText
+          delay={0.2}
+          stagger={0.09}
+          content={markdownify("Based in Latina, serving customers across **Italy**")}
+        />
+      </h2>
+    </div>
+
+    <OptimizedImage
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      src="/images/location.png"
+      alt="Coverage"
+      class="w-full"
+    />
+  </div>
+</section>

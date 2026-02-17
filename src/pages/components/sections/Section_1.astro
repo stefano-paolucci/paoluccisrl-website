@@ -1,0 +1,120 @@
+---
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+import homeIcon from "@/assets/images/icons/svg/home.svg";
+import SoundOffIcon from "@/assets/images/icons/svg/sound-off.svg";
+import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
+---
+
+<section class="section-noise-benefits !pt-8 text-[#262626] dark:text-white md:!pt-12">
+  <div class="container space-y-10 md:space-y-16">
+    <div class="mx-auto text-center">
+       <img
+            src="/logos/logo_wide.svg"
+            alt="Paolucci Infissi"
+            class="mx-auto mb-20 mt-0 h-auto w-[300px] opacity-95 sm:w-[340px] md:w-[380px] lg:w-[420px]"
+            loading="eager"
+          />
+      <h1 class="text-4xl leading-tight font-bold text-[#262626] dark:text-white md:text-6xl lg:text-7xl">
+        <AnimatedText
+          delay={0.5}
+          stagger={0.2}
+          content="<strong>Chiudi fuori il rumore.</strong>"
+        />
+      </h1>
+      <h2 class="text-[#262626] dark:text-white">Apri al silenzio.</h2>
+      <br />
+      <h5 class="noise-muted text-[#3a3a3a] dark:text-white">
+        I nostri infissi in PVC ad alte prestazioni riducono drasticamente l’inquinamento acustico.
+        <br />
+        La casa diventa un luogo di pace, anche nel cuore della città.
+      </h5>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
+          <img src={SoundOffIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-[#262626] dark:text-white">Isolamento acustico evoluto</h3>
+        <p class="noise-muted text-lg leading-relaxed text-[#3a3a3a] dark:text-white">
+          Profili in PVC multicamera e vetri ad alte prestazioni riducono drasticamente i rumori esterni.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-[#262626] dark:text-white">
+          La città resta fuori.
+          <br />
+          Dentro, solo tranquillità.
+        </p>
+      </article>
+
+      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
+          <img src={WindowSectionIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-[#262626] dark:text-white">Tecnologia multicamera</h3>
+        <p class="noise-muted text-lg leading-relaxed text-[#3a3a3a] dark:text-white">
+          La struttura interna del profilo crea barriere naturali contro suoni e dispersioni.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-[#262626] dark:text-white">
+          Non è solo una finestra.
+          <br />
+          È un sistema di protezione invisibile.
+        </p>
+      </article>
+
+      <article class="rounded-2xl bg-transparent p-6 md:p-8 md:col-span-2 xl:col-span-1">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
+          <img src={homeIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-[#262626] dark:text-white">Benessere quotidiano</h3>
+        <p class="noise-muted text-lg leading-relaxed text-[#3a3a3a] dark:text-white">
+          Meno rumore significa meno stress. Un ambiente più stabile, più silenzioso, più vivibile ogni giorno.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-[#262626] dark:text-white">
+          Il comfort non si vede.
+          <br />
+          Si sente.
+        </p>
+      </article>
+    </div>
+
+    <!-- <OptimizedImage
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      src="/images/location.png"
+      alt="Operiamo da Latina e serviamo clienti in Italia"
+      class="w-full"
+    />  -->
+  </div>
+</section>
+
+<style>
+  html[data-theme="light"] .section-noise-benefits,
+  html[data-theme="light"] .section-noise-benefits h1,
+  html[data-theme="light"] .section-noise-benefits h2,
+  html[data-theme="light"] .section-noise-benefits h3,
+  html[data-theme="light"] .section-noise-benefits h5,
+  html[data-theme="light"] .section-noise-benefits p {
+    color: #262626 !important;
+  }
+
+  html[data-theme="light"] .section-noise-benefits .noise-muted {
+    color: #3a3a3a !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits,
+  html[data-theme="dark"] .section-noise-benefits h1,
+  html[data-theme="dark"] .section-noise-benefits h2,
+  html[data-theme="dark"] .section-noise-benefits h3,
+  html[data-theme="dark"] .section-noise-benefits h5,
+  html[data-theme="dark"] .section-noise-benefits p {
+    color: #fff !important;
+  }
+
+  html[data-theme="light"] .section-noise-benefits img[aria-hidden="true"] {
+    filter: brightness(0) invert(0) !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits img[aria-hidden="true"] {
+    filter: brightness(0) invert(1) !important;
+  }
+</style>

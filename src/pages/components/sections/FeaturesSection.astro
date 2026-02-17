@@ -1,0 +1,181 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+---
+
+<section
+  id="featuresSectionIt"
+  class="py-14 text-[#262626] md:py-20 dark:text-white mb-30 md:mb-15 sm:mb-5">
+  <h1
+    class="mx-auto mb-2 text-center font-bold sm:text-6xl md:text-6xl lg:mb-5 lg:text-7xl">
+    Scegliere bene cambia tutto.
+  </h1>
+  <h2
+    class="mx-auto mb-4 text-center sm:text-6xl md:text-2xl lg:mb-20 lg:text-3xl">
+    Lavoriamo con standard che non accettano compromessi.
+  </h2>
+  <div class="mx-auto w-full max-w-425 px-4 sm:px-6 lg:px-10">
+    <div
+      id="featuresCarouselIt"
+      class="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4">
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/logo.svg"
+          alt="Esperienza che diventa garanzia"
+          class="aspect-4/3 w-full rounded-xl !bg-white object-contain p-6"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Esperienza che diventa garanzia
+        </h5>
+        <p class="feature-card-body mb-6">
+          Anni di produzione, installazioni e progetti realizzati ci hanno
+          insegnato una cosa: la qualita non si improvvisa.
+          <br />
+          Ogni infisso nasce da competenze consolidate e da processi controllati in
+          ogni fase. Per questo possiamo offrirti sicurezza, affidabilita e prestazioni
+          che durano nel tempo.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/dettaglio.avif"
+          alt="Assistenza che resta nel tempo"
+          class="aspect-4/3 w-full rounded-xl object-cover"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Il dettaglio fa la differenza
+        </h5>
+        <p class="feature-card-body mb-6">
+          Non ci fermiamo alla prestazione tecnica.<br />
+          Prestiamo attenzione a finiture, allineamenti, assemblaggi e precisione
+          millimetrica.<br />
+          Perché la qualità si riconosce nei particolari che non si notano subito,
+          ma si apprezzano nel tempo.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="/images/madeinitaly.svg"
+          alt="Esperienza che diventa garanzia"
+          class="aspect-4/3 w-full rounded-xl !bg-white object-contain p-6"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Orgogliosamente Made in Italy
+        </h5>
+        <p class="feature-card-body mb-6">
+          Produciamo internamente ogni serramento, unendo tecnologia evoluta e
+          cura artigianale.<br />
+          Il nostro è un processo interamente controllato: dalla progettazione alla
+          realizzazione finale. Un infisso Paolucci non è solo un prodotto. È il risultato
+          di una filiera italiana di qualità.
+        </p>
+      </article>
+
+      <article
+        class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
+        <OptimizedImage
+          src="public/images/customer_care.avif"
+          alt="Assistenza che resta nel tempo"
+          class="aspect-4/3 w-full rounded-xl object-cover"
+          loading="lazy"
+        />
+        <h5
+          class="feature-card-title mt-6 mb-2 text-2xl font-semibold tracking-tight">
+          Assistenza che resta nel tempo
+        </h5>
+        <p class="feature-card-body mb-6">
+          Il nostro lavoro non termina con la posa.<br />
+
+          Garantiamo assistenza post vendita, supporto tecnico e disponibilità
+          continua.<br />
+          Perché scegliere Paolucci significa avere un punto di riferimento nel tempo.
+        </p>
+      </article>
+    </div>
+
+    <div class="mt-6 flex items-center justify-center gap-3 md:hidden">
+      <button
+        type="button"
+        data-carousel-prev="featuresCarouselIt"
+        aria-label="Card precedente"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d0d0d0] bg-white shadow-xs transition hover:bg-[#f2f2f2]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="m15 6-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+          </path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-carousel-next="featuresCarouselIt"
+        aria-label="Card successiva"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d0d0d0] bg-white shadow-xs transition hover:bg-[#f2f2f2]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none">
+          <path
+            d="m9 6 6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const carousel = document.getElementById("featuresCarouselIt");
+    if (!carousel) return;
+
+    const prev = document.querySelector(
+      '[data-carousel-prev="featuresCarouselIt"]',
+    );
+    const next = document.querySelector(
+      '[data-carousel-next="featuresCarouselIt"]',
+    );
+
+    const step = () => carousel.clientWidth + 20;
+
+    prev?.addEventListener("click", () => {
+      carousel.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+
+    next?.addEventListener("click", () => {
+      carousel.scrollBy({ left: step(), behavior: "smooth" });
+    });
+  })();
+</script>
+
+<style is:global>
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>

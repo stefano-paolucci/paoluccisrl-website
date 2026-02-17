@@ -1,0 +1,43 @@
+[
+  {
+    "name": "Figtree",
+    "variants": [
+      {
+        "style": "normal",
+        "weight": "400",
+        "src": [
+          "./public/fonts/figtree-400.woff2"
+        ]
+      },
+      {
+        "style": "normal",
+        "weight": "500",
+        "src": [
+          "./public/fonts/figtree-500.woff2"
+        ]
+      }
+    ],
+    "preload": false,
+    "display": "swap",
+    "cssVariable": "--font-primary",
+    "provider": "local",
+    "fallback": "sans-serif"
+  },
+  {
+    "name": "Figtree ExtraBold",
+    "variants": [
+      {
+        "style": "normal",
+        "weight": "800",
+        "src": [
+          "./public/fonts/figtree-800.woff2"
+        ]
+      }
+    ],
+    "preload": false,
+    "display": "swap",
+    "cssVariable": "--font-secondary",
+    "provider": "local",
+    "fallback": "sans-serif"
+  }
+]

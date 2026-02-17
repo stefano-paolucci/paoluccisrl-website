@@ -1,0 +1,70 @@
+---
+import Base from "@/layouts/Base.astro";
+import HomeHero from "@/pages/en/components/sections/HomeHero.astro";
+import Section_1 from "@/pages/en/components/sections/Section_1.astro";
+import HowItWorks from "@/pages/en/components/sections/HowItWorks.astro";
+import Features from "@/pages/en/components/sections/FeaturesSection.astro";
+import BurgerParallaxInsights from "@/pages/en/components/sections/BurgerParallaxInsights.astro";
+import BenefitsSection from "@/pages/en/components/sections/BenefitsSection.astro";
+import ScrollModelStory from "@/pages/en/components/sections/ScrollModelStory.astro";
+import Partner from "@/pages/en/components/sections/Partner.astro";
+import CTA from "@/pages/en/components/sections/CTA.astro";
+import banner2 from "../../assets/images/banner_home2.avif";
+---
+
+<Base
+  homepage={true}
+  title="Paolucci SRL | Schuco PVC Windows"
+  metaDescription="We manufacture custom Schuco PVC windows and doors, with qualified installation and dedicated support.">
+  <HomeHero />
+  <Section_1 />
+
+  <section class="w-full">
+    <div class="relative h-[360px] w-full overflow-hidden sm:h-[460px] md:h-[600px] lg:h-[1200px]">
+      <img
+        src={banner2.src}
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover object-top object-center"
+      />
+    </div>
+  </section>
+
+  <div class="energy-copy mx-auto mt-10 text-center md:mt-14 lg:mt-20">
+    <h2 class="text-2xl leading-tight font-bold md:text-3xl lg:text-3xl">Better insulation</h2>
+    <h1 class="text-4xl leading-tight font-bold md:text-6xl lg:text-7xl">
+      Less energy waste
+    </h1>
+    <br />
+    <h5>
+      Our high-performance PVC windows drastically reduce outdoor noise.
+      <br />
+      Your home becomes a place of calm, even in the heart of the city.
+    </h5>
+  </div>
+
+  <div class="hidden lg:block">
+    <ScrollModelStory />
+  </div>
+  <Features />
+  <BurgerParallaxInsights />
+  <HowItWorks />
+  <Partner />
+  <BenefitsSection />
+  <CTA />
+</Base>
+
+<style>
+  .energy-copy h1,
+  .energy-copy h2,
+  .energy-copy h5 {
+    color: #262626 !important;
+  }
+
+  html[data-theme="dark"] .energy-copy h1,
+  html[data-theme="dark"] .energy-copy h2,
+  html[data-theme="dark"] .energy-copy h5 {
+    color: #fff !important;
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import CustomButton from "@/components/CustomButton.astro";
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+---
+
+<section class="call-to-action overflow-hidden">
+  <div class="relative container py-20 md:py-40">
+    <div class="mx-auto space-y-8 text-center lg:max-w-3xl">
+      <h2 class="has-italic-text text-display-3 md:text-display-2 mb-8 text-center leading-[1.15] font-normal capitalize">
+        <AnimatedText delay={0.2} stagger={0.09} content="Talk to us about your next <strong>window project</strong>" />
+      </h2>
+
+      <div data-aos="fade-down-sm" data-aos-delay="100" class="mx-auto max-w-2xl space-y-1 text-center">
+        <p class="text-lg font-medium">Tell us about your project: new build, renovation, or window replacement.</p>
+        <p class="opacity-80">We will help you choose the best solution for comfort, design, and performance.</p>
+      </div>
+
+      <div data-aos="fade-down-sm" data-aos-delay="200">
+        <CustomButton class="btn-md btn-primary" enable={true} label="REQUEST A QUOTE" url="/contact/" rel="" target="" />
+      </div>
+    </div>
+
+    <div class="pattern-shape pointer-events-none absolute top-0 left-0 -z-10 flex h-full w-[150%] opacity-40 select-none">
+      {
+        new Array(12)
+          .fill("")
+          .map((_, index) => (
+            <div
+              class:list={[
+                "from-primary/10 h-full w-1/12 border-2 border-white to-transparent md:w-1/5",
+                index % 2 !== 0 ? "bg-linear-to-t" : "bg-linear-to-b",
+              ]}
+            />
+          ))
+      }
+    </div>
+  </div>
+  <script>
+    import { animate, scroll } from "motion";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const section = document.querySelector(".call-to-action");
+      if (!section) return;
+
+      scroll(
+        animate(".pattern-shape", {
+          x: [-1000, 100],
+        }),
+      );
+    });
+  </script>
+</section>

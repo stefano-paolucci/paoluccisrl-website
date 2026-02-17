@@ -1,0 +1,300 @@
+---
+import ContactForm from "@/components/widgets/ContactForm.astro";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<section class="relative contact-section">
+  <div class="container">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="contact-left space-y-6 pt-2 max-lg:text-center lg:self-center" data-aos="fade-right-sm" data-aos-delay="100" data-aos-duration="900">
+          <h2 class="font-primary text-h2-sm md:text-h2 capitalize font-extrabold">Contatti</h2>
+          <p class="text-lg leading-relaxed">
+            Per informazioni scrivici o chiamaci ai riferimenti qui sotto.
+            Puoi anche inviarci una richiesta dal modulo oppure avviare direttamente la chat WhatsApp.
+          </p>
+
+          <a
+            href="https://wa.me/393408459509?text=Ciao%2C%20vorrei%20ricevere%20informazioni"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 group max-lg:mx-auto inline-flex items-center gap-3 rounded-full border border-[#25D366]/35 bg-[#25D366]/10 px-6 py-3 font-medium text-inherit transition-all duration-300 hover:-translate-y-0.5 hover:border-[#25D366] hover:bg-[#25D366]/20">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full text-current [&_svg_*]:fill-current [&_svg_*]:stroke-current">
+              <OptimizedImage inlineSvg={true} src="/images/whatsapp-icon.svg" alt="WhatsApp" class="h-5 w-5 text-current" />
+            </span>
+            <span>Contattaci su WhatsApp</span>
+          </a>
+
+          <div class="mt-10 grid gap-6 max-lg:justify-items-center md:grid-cols-3">
+            <div class="space-y-3 max-lg:text-center">
+              <span class="max-lg:mx-auto inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+                <OptimizedImage inlineSvg={true} src="/images/place-icon.svg" alt="Indirizzo" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="font-semibold">Indirizzo</p>
+                <p>Via Colle Marchitto, snc</p>
+                <p>03039 Sora (FR), Italia</p>
+              </div>
+            </div>
+
+            <div class="space-y-3 max-lg:text-center">
+              <span class="max-lg:mx-auto inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+                <OptimizedImage inlineSvg={true} src="/images/phone-icon.svg" alt="Telefono e email" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="font-semibold">Telefono e email</p>
+                <a class="block underline underline-offset-4" href="tel:+393408459509">+39 340 845 9509</a>
+                <a class="block underline underline-offset-4" href="mailto:info@paoluccisrl.com">info@paoluccisrl.com</a>
+              </div>
+            </div>
+
+            <div class="space-y-3 max-lg:text-center">
+              <span class="max-lg:mx-auto inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+                <OptimizedImage inlineSvg={true} src="/images/facebook-icon.svg" alt="Facebook" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="font-semibold">Facebook</p>
+                <a class="block underline underline-offset-4" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/paoluccisrl">/paoluccisrl</a>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="contact-right lg:self-center" data-aos="fade-left-sm" data-aos-delay="120" data-aos-duration="900">
+        <ContactForm
+          customHandler={true}
+          class="!w-full !max-w-none !rounded-[0.5rem] !bg-[#f8f8f8] !p-6 md:!p-8 lg:!p-10 dark:!bg-[#262a2f]"
+          form={{
+            emailSubject: "Nuova richiesta dal sito Paolucci SRL",
+            submitButton: { enable: true, label: "INVIA MESSAGGIO" },
+            inputs: [
+              { label: "", placeholder: "Nome *", name: "Nome", required: true, halfWidth: true, defaultValue: "" },
+              { label: "", placeholder: "Cognome *", name: "Cognome", required: true, halfWidth: true, defaultValue: "" },
+              { label: "", placeholder: "Email *", name: "Email", required: true, type: "email", halfWidth: false, defaultValue: "" },
+              { label: "", placeholder: "Numero di telefono *", name: "Telefono", required: true, halfWidth: false, defaultValue: "" },
+              { label: "", tag: "textarea", defaultValue: "", rows: "4", placeholder: "Messaggio... *", name: "Messaggio", required: true, halfWidth: false },
+              { label: "Ho letto e accetto l'informativa sulla [Privacy Policy](/privacy-policy/)", id: "privacy-policy", name: "Privacy", value: "Agreed", checked: false, required: true, type: "checkbox", halfWidth: false, defaultValue: "" },
+              { note: "success", parentClass: "hidden text-sm message success", content: "Richiesta inviata correttamente. Ti ricontatteremo al piu presto." },
+              { note: "deprecated", parentClass: "hidden text-sm message error", content: "Invio non riuscito. Scrivici a [info@paoluccisrl.com](mailto:info@paoluccisrl.com)." }
+            ],
+          } as any}
+        />
+
+        <!-- Turnstile container (invisible). Non impatta sulla grafica -->
+        <div
+          id="turnstile-widget"
+          class="hidden"
+          data-site-key={TURNSTILE_SITE_KEY || ""}>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Caricamento Turnstile (explicit render) -->
+{TURNSTILE_SITE_KEY ? (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+) : null}
+
+<script>
+  import { setMessage } from "@/lib/utils/FormHandle";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    if (!form) return;
+
+    // --- Honeypot (campo invisibile via JS, zero impatto grafico) ---
+    const honeypot = document.createElement("input");
+    honeypot.type = "text";
+    honeypot.name = "website"; // nome non sospetto
+    honeypot.autocomplete = "off";
+    honeypot.tabIndex = -1;
+    honeypot.setAttribute("aria-hidden", "true");
+    honeypot.style.position = "absolute";
+    honeypot.style.left = "-10000px";
+    honeypot.style.top = "auto";
+    honeypot.style.width = "1px";
+    honeypot.style.height = "1px";
+    honeypot.style.opacity = "0";
+    form.appendChild(honeypot);
+
+    // --- Helpers per leggere campi esistenti (senza cambiare markup) ---
+    const getInputByName = (name: string) =>
+      (form.querySelector(`[name="${CSS.escape(name)}"]`) as HTMLInputElement | HTMLTextAreaElement | null);
+
+    const getCheckboxValue = (name: string) => {
+      const el = getInputByName(name) as HTMLInputElement | null;
+      return !!el?.checked;
+    };
+
+    const normalize = (v: unknown) => String(v ?? "").trim();
+
+    // --- Validazioni come nel TSX ---
+    const isName = (s: string) => /^[a-zA-ZÀ-ÿ\s'-]+$/.test(s);
+    const isEmail = (s: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(s);
+    const isPhone = (s: string) => /^\+?[0-9\s-]+$/.test(s);
+    const hasDangerousMessageChars = (s: string) => /[<>{}[\]`\\]/.test(s);
+
+    const validate = (payload: any) => {
+      const errors: string[] = [];
+
+      if (!payload.firstName) errors.push("Nome obbligatorio");
+      else if (payload.firstName.length < 2) errors.push("Nome: minimo 2 caratteri");
+      else if (payload.firstName.length > 50) errors.push("Nome: massimo 50 caratteri");
+      else if (!isName(payload.firstName)) errors.push("Nome: caratteri non validi");
+
+      if (!payload.lastName) errors.push("Cognome obbligatorio");
+      else if (payload.lastName.length < 2) errors.push("Cognome: minimo 2 caratteri");
+      else if (payload.lastName.length > 50) errors.push("Cognome: massimo 50 caratteri");
+      else if (!isName(payload.lastName)) errors.push("Cognome: caratteri non validi");
+
+      if (!payload.email) errors.push("Email obbligatoria");
+      else if (!isEmail(payload.email)) errors.push("Email non valida");
+
+      if (!payload.phone) errors.push("Telefono obbligatorio");
+      else if (payload.phone.length < 8 || payload.phone.length > 20) errors.push("Telefono: lunghezza non valida");
+      else if (!isPhone(payload.phone)) errors.push("Telefono: solo numeri/spazi/trattini e + all'inizio");
+
+      if (!payload.message) errors.push("Messaggio obbligatorio");
+      else if (payload.message.length < 10) errors.push("Messaggio: minimo 10 caratteri");
+      else if (payload.message.length > 1000) errors.push("Messaggio: massimo 1000 caratteri");
+      else if (hasDangerousMessageChars(payload.message)) errors.push("Messaggio: caratteri non consentiti");
+
+      if (!payload.privacy) errors.push("Devi accettare la Privacy Policy");
+
+      return errors;
+    };
+
+    // --- Turnstile invisible: render una volta, execute a ogni submit ---
+    const siteKey =
+      (
+        document.getElementById("turnstile-widget") as HTMLElement | null
+      )?.dataset.siteKey || "";
+    let widgetId: string | null = null;
+    let pendingResolve: ((t: string) => void) | null = null;
+    let pendingReject: ((e: any) => void) | null = null;
+
+    const ensureTurnstileRendered = async () => {
+      if (!siteKey) throw new Error("Missing Turnstile site key");
+      if (widgetId) return widgetId;
+
+      // Aspetta che turnstile sia disponibile
+      await new Promise<void>((resolve, reject) => {
+        const start = Date.now();
+        const tick = () => {
+          // @ts-ignore
+          if (typeof window.turnstile !== "undefined") return resolve();
+          if (Date.now() - start > 8000) return reject(new Error("Turnstile not loaded"));
+          requestAnimationFrame(tick);
+        };
+        tick();
+      });
+
+      // @ts-ignore
+      widgetId = window.turnstile.render("#turnstile-widget", {
+        sitekey: siteKey,
+        size: "invisible",
+        callback: (token: string) => {
+          if (pendingResolve) pendingResolve(token);
+          pendingResolve = null;
+          pendingReject = null;
+        },
+        "error-callback": () => {
+          if (pendingReject) pendingReject(new Error("Turnstile error"));
+          pendingResolve = null;
+          pendingReject = null;
+        },
+      });
+
+      return widgetId!;
+    };
+
+    const getTurnstileToken = async () => {
+      const id = await ensureTurnstileRendered();
+
+      return await new Promise<string>((resolve, reject) => {
+        pendingResolve = resolve;
+        pendingReject = reject;
+
+        const timeout = setTimeout(() => {
+          pendingResolve = null;
+          pendingReject = null;
+          reject(new Error("Turnstile timeout"));
+        }, 10000);
+
+        const wrappedResolve = (token: string) => {
+          clearTimeout(timeout);
+          resolve(token);
+        };
+        const wrappedReject = (e: any) => {
+          clearTimeout(timeout);
+          reject(e);
+        };
+
+        pendingResolve = wrappedResolve;
+        pendingReject = wrappedReject;
+
+        // @ts-ignore
+        window.turnstile.reset(id);
+        // @ts-ignore
+        window.turnstile.execute(id);
+      });
+    };
+
+    // --- Submit handler (sostituisce provider/netlify/formspree ecc.) ---
+    form.addEventListener("submit", async (e: Event) => {
+      e.preventDefault();
+
+      const firstName = normalize(getInputByName("Nome")?.value);
+      const lastName = normalize(getInputByName("Cognome")?.value);
+      const email = normalize(getInputByName("Email")?.value);
+      const phone = normalize(getInputByName("Telefono")?.value);
+      const message = normalize((getInputByName("Messaggio") as HTMLTextAreaElement | null)?.value);
+      const privacy = getCheckboxValue("Privacy");
+
+      const payload = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        company: "Privato",
+        message,
+        privacy,
+        honeypot: normalize(honeypot.value),
+      };
+
+      const validationErrors = validate(payload);
+      if (validationErrors.length > 0) {
+        setMessage(validationErrors[0], false, false, form);
+        return;
+      }
+
+      setMessage("Invio in corso...", true, true, form);
+
+      try {
+        const turnstileToken = await getTurnstileToken();
+
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, turnstileToken }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          setMessage(data?.error || "Invio non riuscito. Riprova tra poco.", false, false, form);
+          return;
+        }
+
+        // Success
+        form.reset();
+        honeypot.value = "";
+        setMessage("Richiesta inviata correttamente. Ti ricontatteremo al più presto.", true, false, form);
+      } catch (err) {
+        setMessage("Errore di connessione o verifica antispam. Riprova.", false, false, form);
+      }
+    });
+  });
+</script>

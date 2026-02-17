@@ -1,0 +1,603 @@
+---
+const frameDir = "/models/living_1";
+const frameCount = 50;
+const storyCenterShift = "0vw";
+const modelTextGap = "clamp(0.6rem, 1.2vw, 1.6rem)";
+const modelCanvasSize = "min(600px, 48vw)";
+const panelDesktopWidth = "min(420px, 29vw)";
+const mediaVerticalShift = "0vh";
+const storyTopSafeBand = "128px";
+const deadScrollProgress = 0.12;
+const paragraphGapFrames = 0;
+
+type StoryBlock = {
+  title: string;
+  body: string[];
+  startFrame: number;
+  durationFrames: number;
+  noFadeOut?: boolean;
+  pauseAnimation?: boolean;
+  top?: string;
+  right?: string;
+  left?: string;
+  width?: string;
+};
+
+const clampFrame = (frame: number) =>
+  Math.min(frameCount, Math.max(1, Math.round(frame)));
+const endFrame = (startFrame: number, durationFrames: number) =>
+  clampFrame(startFrame + Math.max(1, durationFrames) - 1);
+
+// Configurazione semplice:
+// - startFrame: frame in cui il testo entra (1..frameCount)
+// - durationFrames: per quanti frame resta visibile (durata scroll)
+// - pauseAnimation: se true, durante questo paragrafo i frame restano fermi
+// - paragraphGapFrames: pausa (in frame) tra un testo e il successivo
+// - top / right / left / width: posizione del blocco testo
+const storyBlocks: StoryBlock[] = [
+  {
+    title: "Efficienza energetica e risparmio",
+    body: [
+      "La struttura multicamera dei profili in PVC e i vetri basso-emissivi riducono la dispersione di calore verso l’esterno.",
+      "Questo significa ambienti più stabili, meno sbalzi termici e un miglior rendimento dell’impianto di climatizzazione.",
+    ],
+    startFrame: 4,
+    durationFrames: 24,
+    pauseAnimation: false,
+    top: "calc(50% - (var(--story-top-safe-band, 0px) / 2))",
+    left: "calc(var(--story-composite-shift) + 50% + var(--story-model-half) + var(--story-model-text-gap))",
+    right: "auto",
+    width: panelDesktopWidth,
+  },
+  {
+    title: "Comfort in ogni stagione",
+    body: [
+      "Gli infissi Paolucci contribuiscono a creare un involucro edilizio più performante, migliorando la classe energetica dell’abitazione.",
+      "Più benessere quotidiano, meno sprechi energetici, maggiore valore per l’immobile.",
+    ],
+    startFrame: 25,
+    durationFrames: 26,
+    pauseAnimation: false,
+    top: "calc(50% - (var(--story-top-safe-band, 0px) / 2))",
+    left: "calc(var(--story-composite-shift) + 50% + var(--story-model-half) + var(--story-model-text-gap))",
+    right: "auto",
+    width: panelDesktopWidth,
+    noFadeOut: true,
+  },
+  /*{
+    title: "Guarnizioni di tenuta",
+    body: [
+      "Sistema di guarnizioni progettato per una chiusura precisa contro aria, acqua e agenti esterni.",
+      "La continuita di tenuta supporta prestazioni costanti nel tempo.",
+    ],
+    startFrame: 51,
+    durationFrames: 100,
+    top: "28%",
+    right: textRightSpace,
+    width: "min(440px, 30vw)",
+  },
+  {
+    title: "Design essenziale",
+    body: [
+      "Linee pulite e proporzioni bilanciate per un'estetica contemporanea integrabile in diversi contesti architettonici.",
+      "Tecnica e stile convivono in un unico elemento costruttivo.",
+    ],
+    startFrame: 100,
+    durationFrames: 25,
+    top: "25%",
+    right: textRightSpace,
+    width: "min(440px, 30vw)",
+    noFadeOut: true,
+  },*/
+];
+
+const totalScrollUnits =
+  storyBlocks.reduce(
+    (sum, block) => sum + Math.max(1, block.durationFrames),
+    0,
+  ) +
+  Math.max(0, storyBlocks.length - 1) * Math.max(0, paragraphGapFrames);
+
+let unitCursor = 0;
+const timelineBlocks = storyBlocks.map((block, index) => {
+  const blockUnits = Math.max(1, block.durationFrames);
+  const startUnit = unitCursor;
+  const endUnit = startUnit + blockUnits;
+  unitCursor = endUnit + Math.max(0, paragraphGapFrames);
+
+  const next = storyBlocks[index + 1];
+  const frameTo = next
+    ? Math.max(block.startFrame, next.startFrame - 1)
+    : endFrame(block.startFrame, block.durationFrames);
+
+  return {
+    ...block,
+    startProgress: startUnit / Math.max(1, totalScrollUnits),
+    endProgress: endUnit / Math.max(1, totalScrollUnits),
+    frameStart: clampFrame(block.startFrame) - 1,
+    frameTo: clampFrame(frameTo) - 1,
+  };
+});
+---
+
+<section
+  class="scroll-story"
+  id="livingStory"
+  aria-label="Story parallax modello"
+  data-frame-dir={frameDir}
+  data-frame-count={frameCount}
+  data-dead-scroll={deadScrollProgress}
+  style={`--story-center-shift:${storyCenterShift};--media-vertical-shift:${mediaVerticalShift};--story-top-safe-band:${storyTopSafeBand};--story-model-size:${modelCanvasSize};--story-model-half:calc(var(--story-model-size) / 2);--story-model-text-gap:${modelTextGap};--story-panel-size:${panelDesktopWidth};--story-composite-shift:calc((var(--story-model-text-gap) + var(--story-panel-size)) / -2);`}>
+  <div class="scroll-story__sticky">
+    <div
+      class="pointer-events-none absolute top-[calc(var(--story-top-safe-band,0px)+1.1rem)] left-1/2 z-[4] w-[min(900px,88vw)] -translate-x-1/2 text-center text-[var(--story-text)] max-[1100px]:top-[calc(var(--story-top-safe-band,0px)+0.65rem)] max-[1100px]:w-[min(920px,92vw)] max-[767px]:top-[calc(var(--story-top-safe-band,0px)+0.35rem)] max-[767px]:w-[92vw]"
+      aria-hidden="false"
+    >
+    </div>
+
+    <div class="scroll-story__grid">
+      <div class="scroll-story__media">
+        <canvas
+          id="livingStoryCanvas"
+          class="scroll-story__canvas"
+          aria-hidden="true">
+        </canvas>
+        <noscript>
+          <img
+            src="/models/living_1/0001.webp"
+            alt="Sezione del serramento"
+            class="scroll-story__fallback"
+            loading="lazy"
+          />
+        </noscript>
+      </div>
+
+      <aside class="scroll-story__copy" aria-live="polite">
+        {
+          timelineBlocks.map((block, index) => (
+            <article
+              class="scroll-story__panel"
+              data-panel
+              data-start={block.startProgress}
+              data-end={block.endProgress}
+              data-no-fade-out={block.noFadeOut ? "true" : "false"}
+              data-freeze-animation={block.pauseAnimation ? "true" : "false"}
+              data-frame-start={block.frameStart}
+              data-frame-to={block.frameTo}
+              data-index={index}
+              style={`--panel-top:${block.top ?? "24%"};--panel-right:${block.right ?? "auto"};--panel-left:${block.left ?? "calc(50% + var(--story-model-half) + var(--story-model-text-gap))"};--panel-width:${block.width ?? panelDesktopWidth};`}>
+              <div class="scroll-story__panel-content" data-panel-content>
+                <h3>{block.title}</h3>
+                {block.body.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </aside>
+    </div>
+  </div>
+
+  <script is:inline>
+    const root = document.getElementById("livingStory");
+    const canvas = document.getElementById("livingStoryCanvas");
+
+    if (!root || !canvas) {
+      throw new Error("[ScrollModelStory] Root o canvas non trovati.");
+    }
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) {
+      throw new Error("[ScrollModelStory] Contesto canvas non disponibile.");
+    }
+
+    const panels = Array.from(root.querySelectorAll("[data-panel]"));
+    const frameDir = root.getAttribute("data-frame-dir") || "/models/living_1";
+    const frameCount = Number(root.getAttribute("data-frame-count") || 50);
+    const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const easeInCubic = (t) => t * t * t;
+    const deadScrollProgress = clamp(
+      Number(root.getAttribute("data-dead-scroll") || 0),
+      0,
+      0.9,
+    );
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const frames = [];
+    const panelTimeline = buildPanelTimeline();
+    let lastRenderedFrameIndex = 0;
+
+    function framePath(index) {
+      return `${frameDir}/${String(index + 1).padStart(4, "0")}.webp`;
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      drawFrameByIndex(frameIndexFromProgress(currentProgress));
+    }
+
+    function drawImageContain(image) {
+      if (!image || !image.naturalWidth || !image.naturalHeight) return;
+
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const iw = image.naturalWidth;
+      const ih = image.naturalHeight;
+
+      const scale = Math.min(cw / iw, ch / ih);
+      const dw = iw * scale;
+      const dh = ih * scale;
+      const dx = (cw - dw) * 0.5;
+      const dy = (ch - dh) * 0.5;
+
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(image, dx, dy, dw, dh);
+    }
+
+    function drawFrameByIndex(index) {
+      const idx = Math.round(clamp(index, 0, frameCount - 1));
+      const frame = getBestAvailableFrame(idx);
+      if (!frame) return;
+      drawImageContain(frame);
+    }
+
+    function getBestAvailableFrame(targetIndex) {
+      if (frames[targetIndex]) {
+        lastRenderedFrameIndex = targetIndex;
+        return frames[targetIndex];
+      }
+
+      for (let offset = 1; offset < frameCount; offset++) {
+        const prev = targetIndex - offset;
+        if (prev >= 0 && frames[prev]) {
+          lastRenderedFrameIndex = prev;
+          return frames[prev];
+        }
+
+        const next = targetIndex + offset;
+        if (next < frameCount && frames[next]) {
+          lastRenderedFrameIndex = next;
+          return frames[next];
+        }
+      }
+
+      if (frames[lastRenderedFrameIndex]) {
+        return frames[lastRenderedFrameIndex];
+      }
+
+      return null;
+    }
+
+    function panelState(progress, start, end, noFadeOut = false) {
+      if (progress <= start) {
+        return { opacity: 0, x: 48, y: 0 };
+      }
+      if (progress >= end) {
+        if (noFadeOut) return { opacity: 1, x: 0, y: 0 };
+        return { opacity: 0, x: 48, y: 0 };
+      }
+
+      const span = end - start;
+      const fadePortion = Math.max(0.14, span * 0.32);
+      const enterEnd = start + fadePortion;
+      const exitStart = end - fadePortion;
+
+      if (progress < enterEnd) {
+        const t = easeOutCubic(clamp((progress - start) / fadePortion));
+        return {
+          opacity: t,
+          x: (1 - t) * 48,
+          y: 0,
+        };
+      }
+
+      if (!noFadeOut && progress > exitStart) {
+        const t = easeInCubic(clamp((progress - exitStart) / fadePortion));
+        return {
+          opacity: 1 - t,
+          x: 0,
+          y: 42 * t,
+        };
+      }
+
+      return { opacity: 1, x: 0, y: 0 };
+    }
+
+    function updatePanels(progress) {
+      panels.forEach((panel) => {
+        const start = Number(panel.getAttribute("data-start") || 0);
+        const end = Number(panel.getAttribute("data-end") || 1);
+        const noFadeOut = panel.getAttribute("data-no-fade-out") === "true";
+        const { opacity, x, y } = panelState(progress, start, end, noFadeOut);
+        const content = panel.querySelector("[data-panel-content]");
+        if (!content) return;
+
+        content.style.opacity = String(opacity);
+        content.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        panel.style.pointerEvents = opacity > 0.01 ? "auto" : "none";
+      });
+    }
+
+    function buildPanelTimeline() {
+      return panels
+        .map((panel) => ({
+          start: Number(panel.getAttribute("data-start") || 0),
+          end: Number(panel.getAttribute("data-end") || 0),
+          freeze: panel.getAttribute("data-freeze-animation") === "true",
+          frameStart: Number(panel.getAttribute("data-frame-start") || 0),
+          frameTo: Number(panel.getAttribute("data-frame-to") || 0),
+        }))
+        .filter(
+          (item) =>
+            !Number.isNaN(item.start) &&
+            !Number.isNaN(item.end) &&
+            item.end > item.start,
+        )
+        .sort((a, b) => a.start - b.start);
+    }
+
+    function frameIndexFromProgress(progress) {
+      const p = clamp(progress);
+      if (!panelTimeline.length) {
+        return p * (frameCount - 1);
+      }
+
+      if (p <= panelTimeline[0].start) {
+        return panelTimeline[0].frameStart;
+      }
+
+      for (let i = 0; i < panelTimeline.length; i++) {
+        const segment = panelTimeline[i];
+        if (p >= segment.start && p <= segment.end) {
+          if (segment.freeze) return segment.frameStart;
+          const t = clamp(
+            (p - segment.start) / Math.max(0.0001, segment.end - segment.start),
+          );
+          return (
+            segment.frameStart + (segment.frameTo - segment.frameStart) * t
+          );
+        }
+      }
+
+      return panelTimeline[panelTimeline.length - 1].frameTo;
+    }
+
+    function sectionProgress() {
+      const rect = root.getBoundingClientRect();
+      const scrollSpan = rect.height - window.innerHeight;
+      if (scrollSpan <= 0) return 0;
+      const raw = clamp(-rect.top / scrollSpan);
+      if (raw <= deadScrollProgress) return 0;
+      return clamp((raw - deadScrollProgress) / (1 - deadScrollProgress));
+    }
+
+    let currentProgress = 0;
+    let ticking = false;
+
+    function requestTick() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        currentProgress = sectionProgress();
+        drawFrameByIndex(frameIndexFromProgress(currentProgress));
+        updatePanels(currentProgress);
+        ticking = false;
+      });
+    }
+
+    async function preloadFrames() {
+      const tasks = Array.from({ length: frameCount }, (_, i) => {
+        return new Promise((resolve) => {
+          const image = new Image();
+          image.decoding = "async";
+          image.src = framePath(i);
+
+          image.onload = () => {
+            frames[i] = image;
+            resolve(true);
+          };
+
+          image.onerror = () => {
+            resolve(false);
+          };
+        });
+      });
+
+      await Promise.all(tasks);
+
+      if (!frames.some(Boolean)) {
+        const fallback = new Image();
+        fallback.src = framePath(0);
+        frames[0] = fallback;
+      }
+    }
+
+    function init() {
+      resizeCanvas();
+      requestTick();
+
+      window.addEventListener("scroll", requestTick, { passive: true });
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        requestTick();
+      });
+    }
+
+    preloadFrames().then(init);
+  </script>
+
+  <style>
+    .scroll-story {
+      --story-bg: #fff;
+      --story-text: #343844;
+      --story-muted: #4a4d55;
+      --story-paragraph: #4a4d55;
+      --story-height: 430vh;
+      position: relative;
+      height: var(--story-height);
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #fff;
+    }
+
+    .scroll-story__sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--story-bg);
+    }
+
+    .scroll-story__sticky::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--story-top-safe-band, 0px);
+      background: #fff;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .scroll-story__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      width: min(1280px, 94vw);
+      height: calc(100% - var(--story-top-safe-band, 0px));
+      margin-top: var(--story-top-safe-band, 0px);
+      margin-inline: auto;
+      transform: translateX(var(--story-center-shift, 0));
+    }
+
+    .scroll-story__media {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(var(--story-composite-shift, 0));
+    }
+
+    .scroll-story__canvas {
+      width: var(--story-model-size);
+      aspect-ratio: 1 / 1;
+      display: block;
+      transform: translateY(var(--media-vertical-shift, 0));
+    }
+
+    .scroll-story__fallback {
+      width: var(--story-model-size);
+      height: auto;
+      display: block;
+      transform: translateY(var(--media-vertical-shift, 0));
+    }
+
+    .scroll-story__copy {
+      position: absolute;
+      inset: var(--story-top-safe-band, 0px) 0 0 0;
+      width: min(1280px, 94vw);
+      margin-inline: auto;
+      pointer-events: none;
+      transform: translateX(var(--story-center-shift, 0));
+    }
+
+    .scroll-story__panel {
+      position: absolute;
+      top: var(--panel-top, calc(50% - (var(--story-top-safe-band, 0px) / 2)));
+      right: var(--panel-right, auto);
+      left: var(
+        --panel-left,
+        calc(
+          var(--story-composite-shift, 0) + 50% + var(--story-model-half) +
+            var(--story-model-text-gap)
+        )
+      );
+      width: var(--panel-width, min(420px, 29vw));
+      color: var(--story-muted);
+      text-align: left;
+      transform: translateY(-50%);
+    }
+
+    .scroll-story__panel-content {
+      opacity: 0;
+      transform: translate3d(48px, 0, 0);
+      will-change: transform, opacity;
+    }
+
+    .scroll-story__panel h3 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.55rem, 2.2vw, 2.35rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--story-text);
+    }
+
+    .scroll-story__panel p {
+      margin: 0 0 1rem;
+      font-size: clamp(1rem, 1vw + 0.55rem, 1.24rem);
+      line-height: 1.5;
+      color: var(--story-paragraph);
+    }
+
+    html[data-theme="dark"] .scroll-story {
+      --story-dark-surface: #262626;
+      --story-bg: #262626;
+      --story-text: #fff;
+      --story-muted: #fff;
+      --story-paragraph: #fff;
+      background: var(--story-dark-surface);
+    }
+
+    html[data-theme="dark"] .scroll-story__sticky {
+      background: var(--story-dark-surface);
+    }
+
+    html[data-theme="dark"] .scroll-story__sticky::before {
+      background: var(--story-dark-surface);
+    }
+
+    @media (max-width: 1100px) {
+      .scroll-story {
+        --story-height: 500vh;
+        --story-top-safe-band: 86px;
+      }
+
+      .scroll-story__grid {
+        width: min(920px, 94vw);
+        transform: none;
+      }
+
+      .scroll-story__media {
+        align-items: center;
+        transform: none;
+      }
+
+      .scroll-story__canvas,
+      .scroll-story__fallback {
+        width: min(620px, 84vw);
+        transform: translateY(0);
+      }
+
+      .scroll-story__copy {
+        inset: auto 0 6vh 0;
+        height: 36vh;
+        width: min(920px, 94vw);
+        transform: none;
+      }
+
+      .scroll-story__panel {
+        top: auto;
+        left: 4vw;
+        right: 4vw;
+        width: auto;
+        transform: none;
+      }
+    }
+  </style>
+</section>

@@ -1,0 +1,48 @@
+{
+  "main": [
+    {
+      "enable": true,
+      "name": "Home",
+      "weight": 1,
+      "url": ""
+    },
+    {
+      "enable": true,
+      "name": "Azienda",
+      "weight": 2,
+      "url": "/azienda/"
+    },
+    {
+      "enable": true,
+      "name": "Contatti",
+      "weight": 3,
+      "url": "/contact/"
+    },
+    {
+      "enable": true,
+      "name": "Bonus attivi",
+      "weight": 4,
+      "url": "/bonus/"
+    }
+  ],
+  "footerMenu": [
+    {
+      "enable": true,
+      "name": "Azienda",
+      "url": "/azienda/",
+      "weight": 1
+    },
+    {
+      "enable": true,
+      "name": "Bonus",
+      "url": "/bonus/",
+      "weight": 2
+    },
+    {
+      "enable": true,
+      "name": "Contatti",
+      "url": "/contact/",
+      "weight": 3
+    }
+  ]
+}

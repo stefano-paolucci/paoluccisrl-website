@@ -1,0 +1,36 @@
+{
+  "main": [
+    {
+      "enable": true,
+      "name": "Home",
+      "weight": 1,
+      "url": ""
+    },
+    {
+      "enable": true,
+      "name": "Company",
+      "weight": 2,
+      "url": "/company/"
+    },
+    {
+      "enable": true,
+      "name": "Contact",
+      "weight": 3,
+      "url": "/contact/"
+    }
+  ],
+  "footerMenu": [
+    {
+      "enable": true,
+      "name": "Company",
+      "url": "/company/",
+      "weight": 1
+    },
+    {
+      "enable": true,
+      "name": "Contact",
+      "url": "/contact/",
+      "weight": 2
+    }
+  ]
+}

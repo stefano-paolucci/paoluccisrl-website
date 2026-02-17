@@ -1,0 +1,66 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import SquareElem from "@/components/widgets/SquareElem.astro";
+import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+---
+
+<section class="overflow-hidden">
+  <div class="container space-y-16 md:space-y-32">
+    <div class="space-y-10 md:space-y-16">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="has-italic-text capitalize">
+          <AnimatedText delay={0.2} stagger={0.09} content="Paolucci SRL: <strong>esperienza e innovazione</strong>" />
+        </h2>
+      </div>
+
+      <div class="grid gap-4 md:gap-8 lg:grid-cols-3 lg:grid-rows-[300px_300px]">
+        <div data-aos="zoom-in-sm" data-aos-delay="200" data-aos-offset="0" class="row-span-2"><OptimizedImage src="/images/about/1.jpg" class="size-full object-cover" alt="Sede" /></div>
+        <div data-aos="zoom-in-sm" data-aos-delay="200" data-aos-offset="0"><OptimizedImage src="/images/about/2.jpg" class="size-full object-cover" alt="Sede" /></div>
+        <div data-aos="zoom-in-sm" data-aos-delay="200" data-aos-offset="0"><OptimizedImage src="/images/about/3.jpg" class="size-full object-cover" alt="Sede" /></div>
+        <div data-aos="zoom-in-sm" data-aos-delay="200" data-aos-offset="0" class="col-span-2"><OptimizedImage src="/images/about/4.jpg" class="size-full object-cover" alt="Sede" /></div>
+      </div>
+    </div>
+
+    <div class="space-y-8 p-0 md:space-y-16 lg:px-12 xl:px-24">
+      <h2 data-aos="fade-up-sm" class="has-italic-text capitalize">Produzione di infissi in PVC Schuco <strong>dal 1984</strong></h2>
+      <div class="grid gap-14 md:grid-cols-12">
+        <div class="relative md:col-span-4" data-aos="fade-right-sm">
+          <OptimizedImage width={310} height={270} class="size-full object-cover" src="/images/about/group-photo.jpg" alt="Paolucci SRL" />
+          <div class="pointer-events-none absolute inset-0 size-full select-none">
+            <span class="translate-x-centered absolute -top-1 h-1 w-[115%] border-b border-dashed border-black/50"></span>
+            <span class="translate-x-centered absolute -bottom-px h-1 w-[115%] border-b border-dashed border-black/50"></span>
+            <span class="translate-y-centered absolute -left-px h-[115%] w-1 border-s border-dashed border-black/50"></span>
+            <span class="translate-y-centered absolute -right-1 h-[115%] w-1 border-s border-dashed border-black/50"></span>
+            <SquareElem class="absolute -top-3.5 -left-3.5 fill-white" />
+            <SquareElem class="absolute -top-3.5 -right-3.5 fill-white" />
+            <SquareElem class="absolute -bottom-3.5 -left-3.5 fill-white" />
+            <SquareElem class="absolute -right-3.5 -bottom-3.5 fill-white" />
+          </div>
+          <OptimizedImage src="/images/about/image-shape.png" class="absolute bottom-0 left-0 w-full" />
+        </div>
+
+        <div data-aos="fade-right-sm" data-aos-delay="150" class="space-y-7 md:col-span-8 md:space-y-14">
+          <p class="text-lg">Siamo un'azienda specializzata nella produzione e posa di infissi in PVC. Dalla consulenza tecnica alla realizzazione su misura, accompagniamo ogni cliente con un approccio concreto e orientato alla qualita.</p>
+
+          <div class="flex flex-wrap gap-7 md:flex-nowrap md:gap-14">
+            <div class="space-y-4">
+              <h3 class="text-h5-sm md:text-h5 font-medium">Mission</h3>
+              <p>Fornire serramenti in PVC ad alte prestazioni che migliorano comfort, sicurezza ed efficienza energetica.</p>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-h5-sm md:text-h5 font-medium">Vision</h3>
+              <p>Essere un riferimento affidabile nel settore infissi, con soluzioni su misura e servizio completo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="space-y-3.5 md:text-center"><AnimatedNumber class="text-h2-sm md:text-h2 block" transitionTime="1.2s" content={{ value: "40+" }} /><h3 class="text-h6-sm md:text-h6">Anni di esperienza</h3><p>Operativi nel settore dal 1984</p></div>
+      <div class="space-y-3.5 md:text-center"><AnimatedNumber class="text-h2-sm md:text-h2 block" transitionTime="1.2s" content={{ value: "PVC" }} /><h3 class="text-h6-sm md:text-h6">Specializzazione</h3><p>Produzione dedicata a infissi in PVC Schuco</p></div>
+      <div class="space-y-3.5 md:text-center"><AnimatedNumber class="text-h2-sm md:text-h2 block" transitionTime="1.2s" content={{ value: "360" }} /><h3 class="text-h6-sm md:text-h6">Servizio completo</h3><p>Consulenza, produzione, posa e assistenza</p></div>
+    </div>
+  </div>
+</section>

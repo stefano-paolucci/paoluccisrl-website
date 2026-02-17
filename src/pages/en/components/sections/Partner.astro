@@ -1,0 +1,340 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import schucoPartnerLogo from "@/assets/logos/logo_schuco_partner.svg";
+
+const backgroundImage = "/src/assets/images/banner_home4.avif";
+const maskSrc =
+  typeof schucoPartnerLogo === "string"
+    ? schucoPartnerLogo
+    : schucoPartnerLogo.src;
+
+// Desktop tuning
+const DESKTOP_INITIAL_BG_SCALE = 1;
+const DESKTOP_BG_SCALE_DELTA = 0.0;
+const MASK_START_SIZE_VMAX = 2000;
+const MASK_FINAL_WIDTH_VW = 52;
+const MASK_FINAL_MIN_WIDTH_PX = 420;
+const MASK_FINAL_MAX_WIDTH_PX = 680;
+const DESKTOP_ACTIVE_SCROLL_PORTION = 0.88;
+---
+
+<section
+  id="partnerReveal"
+  data-desktop-initial-bg-scale={DESKTOP_INITIAL_BG_SCALE}
+  data-desktop-bg-scale-delta={DESKTOP_BG_SCALE_DELTA}
+  data-mask-start-size-vmax={MASK_START_SIZE_VMAX}
+  data-mask-final-width-vw={MASK_FINAL_WIDTH_VW}
+  data-mask-final-min-width-px={MASK_FINAL_MIN_WIDTH_PX}
+  data-mask-final-max-width-px={MASK_FINAL_MAX_WIDTH_PX}
+  data-desktop-active-scroll-portion={DESKTOP_ACTIVE_SCROLL_PORTION}
+  class="partner-reveal-section relative h-auto lg:h-[380svh]">
+  <div class="partner-mobile-card lg:hidden">
+    <p class="partner-mobile-top">
+      Built to the same uncompromising standard
+    </p>
+
+    <img
+      src={maskSrc}
+      alt="Schuco Partner logo"
+      class="partner-mobile-logo-image"
+      loading="lazy"
+      decoding="async"
+    />
+
+    <p class="partner-mobile-bottom">
+      <strong>We chose Schuco for one clear reason:</strong>
+      <br />
+      precision engineering, proven innovation, and performance that never cuts corners.
+    </p>
+  </div>
+
+  <div
+    class="hidden lg:block relative min-h-svh overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+    <div data-bg class="absolute inset-0 z-0 will-change-[opacity,transform]">
+      <OptimizedImage
+        src={backgroundImage}
+        alt=""
+        class="size-full object-cover object-center"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <div
+      data-dim
+      class="absolute inset-0 z-10"
+      style="background: var(--partner-dim-color)">
+    </div>
+
+    <div class="pointer-events-none absolute inset-0 z-20">
+      <div
+        data-logo-mask
+        class="partner-logo-mask absolute inset-0 bg-cover bg-center opacity-0 will-change-[opacity,transform]"
+        style={`--partner-mask-url:url('${maskSrc}');background-image:url('${backgroundImage}')`}>
+        <div
+          data-logo-white
+          class="partner-logo-fill absolute inset-0 opacity-0 will-change-[opacity]">
+        </div>
+        <div data-shine class="partner-logo-shine absolute inset-0"></div>
+      </div>
+    </div>
+
+    <div class="relative z-30 h-full px-6 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16">
+      <h3
+  data-top-copy
+  class="absolute top-[calc(50%-clamp(8rem,15vh,11rem))] left-1/2 w-full max-w-4xl -translate-x-1/2 -translate-y-10 text-center text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.35em] uppercase text-white">
+  Built to the same uncompromising standard
+</h3>
+
+      <p
+  data-bottom-copy
+  class="absolute top-[calc(54%+clamp(4.25rem,8.5vh,6.5rem))] left-1/2 w-full max-w-5xl -translate-x-1/2 translate-y-14 text-center text-white sm:text-xs md:text-2xl lg:text-3xl">
+  <strong>We chose Schuco for one clear reason:</strong>
+  <br />
+  precision engineering, proven innovation, and performance that never cuts corners.
+</p>
+
+    </div>
+
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById("partnerReveal");
+    if (!root) return;
+
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const bg = root.querySelector("[data-bg]");
+    const dim = root.querySelector("[data-dim]");
+    const logoMask = root.querySelector("[data-logo-mask]");
+    const logoWhite = root.querySelector("[data-logo-white]");
+    const shine = root.querySelector("[data-shine]");
+    const topCopy = root.querySelector("[data-top-copy]");
+    const bottomCopy = root.querySelector("[data-bottom-copy]");
+
+    const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
+    const initialBgScale = Number(root.dataset.desktopInitialBgScale || 1.2);
+    const bgScaleDelta = Number(root.dataset.desktopBgScaleDelta || 0.05);
+    const maskStartVmax = Number(root.dataset.maskStartSizeVmax || 260);
+    const maskFinalWidthVw = Number(root.dataset.maskFinalWidthVw || 52);
+    const maskFinalMinWidthPx = Number(root.dataset.maskFinalMinWidthPx || 420);
+    const maskFinalMaxWidthPx = Number(root.dataset.maskFinalMaxWidthPx || 980);
+    const activeScrollPortion = Number(
+      root.dataset.desktopActiveScrollPortion || 0.88,
+    );
+    let ticking = false;
+
+    function range(progress, start, end) {
+      return clamp((progress - start) / Math.max(0.0001, end - start));
+    }
+
+    function progress() {
+      const rect = root.getBoundingClientRect();
+      const span = Math.max(1, root.offsetHeight - window.innerHeight);
+      const travelled = clamp(-rect.top, 0, span);
+      return travelled / span;
+    }
+
+    function setMobileStatic() {
+      if (bg) {
+        bg.style.opacity = "0.45";
+        bg.style.transform = "scale(1.08)";
+      }
+      if (dim) dim.style.opacity = "1";
+      if (logoMask) {
+        logoMask.style.opacity = "1";
+        logoMask.style.transform = "scale(1.08)";
+      }
+      if (logoWhite) logoWhite.style.opacity = "1";
+      root.style.setProperty("--partner-mask-size", "78vmin");
+      if (shine) {
+        shine.style.opacity = "0";
+        shine.style.transform = "translateX(120%)";
+      }
+      if (topCopy) {
+        topCopy.style.opacity = "1";
+        topCopy.style.transform = "translateY(0)";
+      }
+      if (bottomCopy) {
+        bottomCopy.style.opacity = "1";
+        bottomCopy.style.transform = "translateY(0)";
+      }
+    }
+
+    function setInitialState() {
+      if (bg) {
+        bg.style.opacity = "1";
+        bg.style.transform = `scale(${initialBgScale})`;
+      }
+      if (dim) dim.style.opacity = "0";
+      if (logoMask) {
+        logoMask.style.opacity = "0";
+        logoMask.style.transform = `scale(${initialBgScale})`;
+      }
+      if (logoWhite) logoWhite.style.opacity = "0";
+      root.style.setProperty("--partner-mask-size", `${maskStartVmax}vmax`);
+      if (shine) {
+        shine.style.opacity = "0";
+        shine.style.transform = "translateX(-140%)";
+      }
+      if (topCopy) {
+        topCopy.style.opacity = "0";
+        topCopy.style.transform = "translateY(-42px)";
+      }
+      if (bottomCopy) {
+        bottomCopy.style.opacity = "0";
+        bottomCopy.style.transform = "translateY(62px)";
+      }
+    }
+
+    function render(p) {
+      const animatedP = clamp(p / Math.max(0.05, activeScrollPortion));
+      const darken = range(animatedP, 0.04, 0.66);
+      const crop = range(animatedP, 0.06, 0.96);
+      const logoIn = range(animatedP, 0.1, 0.34);
+      const logoToWhite = range(crop, 0.82, 0.94);
+      const textIn = range(animatedP, 0.976, 1.0);
+      const bgScale = initialBgScale + crop * bgScaleDelta;
+      const startSizePx =
+        Math.max(window.innerWidth, window.innerHeight) * (maskStartVmax / 100);
+      const finalSizePx = clamp(
+        window.innerWidth * (maskFinalWidthVw / 100),
+        maskFinalMinWidthPx,
+        maskFinalMaxWidthPx,
+      );
+      // Geometric interpolation keeps perceived speed more constant near the end.
+      const safeStart = Math.max(1, startSizePx);
+      const safeEnd = Math.max(1, finalSizePx);
+      const maskSizePx = safeStart * Math.pow(safeEnd / safeStart, crop);
+
+      if (bg) {
+        bg.style.opacity = String(1 - crop * 0.92);
+        bg.style.transform = `scale(${bgScale})`;
+      }
+      if (dim) dim.style.opacity = String(darken);
+
+      if (logoMask) {
+        logoMask.style.opacity = String(logoIn);
+        logoMask.style.transform = `scale(${bgScale})`;
+      }
+      if (logoWhite) logoWhite.style.opacity = String(logoToWhite);
+      root.style.setProperty("--partner-mask-size", `${maskSizePx}px auto`);
+
+      if (shine) {
+        shine.style.opacity = "0";
+        shine.style.transform = "translateX(120%)";
+      }
+
+      if (topCopy) {
+        topCopy.style.opacity = String(textIn);
+        topCopy.style.transform = `translateY(-${(1 - textIn) * 42}px)`;
+      }
+      if (bottomCopy) {
+        bottomCopy.style.opacity = String(textIn);
+        bottomCopy.style.transform = `translateY(${(1 - textIn) * 62}px)`;
+      }
+    }
+
+    function update() {
+      ticking = false;
+      if (!desktopQuery.matches || reducedMotion.matches) {
+        setMobileStatic();
+        return;
+      }
+      render(progress());
+    }
+
+    function requestUpdate() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    setInitialState();
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate, { passive: true });
+    desktopQuery.addEventListener("change", requestUpdate);
+    reducedMotion.addEventListener("change", requestUpdate);
+  })();
+</script>
+
+<style>
+  #partnerReveal {
+    --partner-dim-color: #77b82d;
+    --partner-text-main: #ffffff;
+    --partner-text-muted: rgb(255 255 255 / 0.9);
+  }
+
+  html[data-theme="dark"] #partnerReveal {
+    --partner-text-main: #ffffff;
+    --partner-text-muted: rgb(255 255 255 / 0.9);
+  }
+
+  .partner-logo-mask,
+  .partner-logo-shine {
+    -webkit-mask-image: var(--partner-mask-url);
+    mask-image: var(--partner-mask-url);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: var(--partner-mask-size, 240vmax);
+    mask-size: var(--partner-mask-size, 240vmax);
+    transform-origin: center center;
+  }
+
+  #partnerReveal [data-top-copy] {
+    color: var(--partner-text-muted) !important;
+  }
+
+  #partnerReveal [data-bottom-copy] {
+    color: var(--partner-text-main) !important;
+  }
+
+  .partner-logo-shine {
+    background: linear-gradient(
+      110deg,
+      rgb(255 255 255 / 0) 0%,
+      rgb(255 255 255 / 0.84) 46%,
+      rgb(255 255 255 / 0) 100%
+    );
+    mix-blend-mode: screen;
+  }
+
+  .partner-logo-fill {
+    background: #fff;
+  }
+
+  .partner-mobile-card {
+    margin: clamp(1rem, 4vw, 1.5rem);
+    border-radius: 1.75rem;
+    background: var(--partner-dim-color);
+    padding: clamp(1.5rem, 6vw, 2rem) clamp(1.1rem, 5vw, 2rem);
+    text-align: center;
+    color: #fff;
+  }
+
+  .partner-mobile-top {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .partner-mobile-logo-image {
+    display: block;
+    margin: clamp(1.5rem, 7vw, 2.2rem) auto 0;
+    width: min(100%, 340px);
+    filter: brightness(0) invert(1);
+  }
+
+  .partner-mobile-bottom {
+    margin-top: clamp(1.25rem, 5vw, 1.9rem);
+    font-size: clamp(0.96rem, 4.1vw, 1.18rem);
+    line-height: 1.45;
+  }
+</style>

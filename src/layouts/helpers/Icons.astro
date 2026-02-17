@@ -1,0 +1,11 @@
+---
+import type { IconProps } from "@lucide/astro";
+
+interface Props extends IconProps {
+  icon: keyof typeof import("@lucide/astro");
+}
+
+const { icon, ...restProps } = Astro.props;
+---
+
+<div data-lucide={icon} {...restProps}></div>

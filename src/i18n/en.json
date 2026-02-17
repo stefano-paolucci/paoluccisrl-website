@@ -1,0 +1,65 @@
+{
+  "common": {
+    "readMore": "Read more",
+    "category": "Category",
+    "publishedOn": "Published on",
+    "learnMoreAbout": "Learn more about",
+    "emailPlaceholder": "Email address",
+    "paginationNext": "Next",
+    "paginationPrevious": "Previous",
+    "backToHome": "Back to Home",
+    "careerJobOverview": "Overview",
+    "contactDropdownSearch404": "No results",
+    "careerApplyNow": "Apply now"
+  },
+  "navigation": {
+    "buttonLabel": "Request a quote"
+  },
+  "contactInfo": {
+    "locationLabel": "Office",
+    "location": "Via Campo di Carne, 13, 04100 Latina (LT), Italy",
+    "phoneLabel": "Phone",
+    "phone": "+39 0776 891292",
+    "emailLabel": "Email",
+    "email": "info@paoluccisrl.com"
+  },
+  "subscription": {
+    "label": "Subscribe to our newsletter",
+    "term": "I agree with the [privacy policy](/privacy-policy/)"
+  },
+  "integration": {
+    "relatedIntegrationSectionTitle": "You may also like",
+    "backToIntegration": "Back"
+  },
+  "footer": {
+    "colTitleOne": "Company",
+    "colTitleTwo": "Menu",
+    "colTitleThree": "Contact",
+    "description": "Manufacturing and installation of custom Schuco PVC windows and doors.",
+    "copyright": "Copyright © 2026 Paolucci SRL. All rights reserved."
+  },
+  "footerMenuOne": [
+    {
+      "name": "Company",
+      "url": "/company/"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact/"
+    }
+  ],
+  "footerMenuTwo": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Company",
+      "url": "/company/"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact/"
+    }
+  ]
+}

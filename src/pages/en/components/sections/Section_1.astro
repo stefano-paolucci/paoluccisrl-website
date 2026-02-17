@@ -1,0 +1,101 @@
+---
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+import homeIcon from "@/assets/images/icons/svg/home.svg";
+import SoundOffIcon from "@/assets/images/icons/svg/sound-off.svg";
+import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
+---
+
+<section class="section-noise-benefits !pt-8 text-dark md:!pt-12">
+  <div class="container space-y-10 md:space-y-16">
+    <div class="mx-auto text-center">
+      <h1 class="text-4xl leading-tight font-bold md:text-6xl lg:text-7xl">
+        <AnimatedText
+          delay={0.5}
+          stagger={0.2}
+          content="<strong>Keep noise out.</strong>"
+        />
+      </h1>
+      <h2 class="text-dark dark:text-white">Let silence in.</h2>
+      <br />
+      <h5 class="text-dark/80 dark:text-white">
+        Our high-performance PVC windows and doors dramatically reduce outside noise.
+        <br />
+        Your home becomes a calm, protected space, even in the middle of the city.
+      </h5>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-dark/20 text-xs font-semibold text-dark/50">
+          <img src={SoundOffIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-dark dark:text-white">Advanced acoustic insulation</h3>
+        <p class="text-lg leading-relaxed text-dark/70 dark:text-white">
+          Multi-chamber PVC profiles and high-performance glazing cut external noise at the source.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-dark dark:text-white">
+          The city stays outside.
+          <br />
+          Inside, only peace.
+        </p>
+      </article>
+
+      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-dark/20 text-xs font-semibold text-dark/50">
+          <img src={WindowSectionIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-dark dark:text-white">Multi-chamber technology</h3>
+        <p class="text-lg leading-relaxed text-dark/70 dark:text-white">
+          The internal profile structure creates natural barriers against noise and thermal loss.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-dark dark:text-white">
+          Not just a window.
+          <br />
+          An invisible layer of protection.
+        </p>
+      </article>
+
+      <article class="rounded-2xl bg-transparent p-6 md:p-8 md:col-span-2 xl:col-span-1">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-dark/20 text-xs font-semibold text-dark/50">
+          <img src={homeIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
+        </div>
+        <h3 class="mb-3 text-2xl leading-tight font-semibold text-dark dark:text-white">Everyday well-being</h3>
+        <p class="text-lg leading-relaxed text-dark/70 dark:text-white">
+          Less noise means less stress. A quieter, more stable and more livable environment every single day.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed font-medium text-dark dark:text-white">
+          Comfort is not something you see.
+          <br />
+          It is something you feel.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  html[data-theme="dark"] .section-noise-benefits,
+  html[data-theme="dark"] .section-noise-benefits h1,
+  html[data-theme="dark"] .section-noise-benefits h2,
+  html[data-theme="dark"] .section-noise-benefits h3,
+  html[data-theme="dark"] .section-noise-benefits h5,
+  html[data-theme="dark"] .section-noise-benefits p {
+    color: #fff !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits [class*="text-dark/"] {
+    color: rgb(255 255 255 / 0.9) !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits .border-dark\/20 {
+    border-color: rgb(255 255 255 / 0.28) !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits .text-dark\/50 {
+    color: rgb(255 255 255 / 0.75) !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits img[aria-hidden="true"] {
+    filter: brightness(0) invert(1);
+  }
+</style>

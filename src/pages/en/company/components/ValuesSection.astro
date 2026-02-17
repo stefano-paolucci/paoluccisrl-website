@@ -1,0 +1,23 @@
+---
+import Icons from "@/helpers/Icons.astro";
+import AnimatedText from "@/components/widgets/AnimatedText.astro";
+---
+
+<section>
+  <div class="container space-y-10 md:space-y-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="has-italic-text capitalize">
+        <AnimatedText delay={0.2} stagger={0.09} content="Our <strong>values</strong>" />
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div data-aos="fade-up-sm" data-aos-delay="50" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="BadgeCheck" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Quality</h3><p class="opacity-80">We select reliable materials and components for durable results.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="100" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Ruler" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Precision</h3><p class="opacity-80">Each frame is custom-made with attention to detail.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="150" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Shield" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Reliability</h3><p class="opacity-80">We respect timelines, commitments, and qualified installation standards.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="200" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="MessageSquare" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Listening</h3><p class="opacity-80">We start from real client needs to propose the best solution.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="250" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Lightbulb" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Innovation</h3><p class="opacity-80">We continuously update production processes and technologies.</p></div></div>
+      <div data-aos="fade-up-sm" data-aos-delay="300" data-aos-duration={900} class="flex flex-col gap-4 border p-5 md:p-8"><Icons class="text-3xl" icon="Handshake" /><div class="mt-4 space-y-3"><h3 class="text-h5-sm md:text-h5">Responsibility</h3><p class="opacity-80">We work with transparency and focus on final results.</p></div></div>
+    </div>
+  </div>
+</section>

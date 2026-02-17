@@ -1,0 +1,65 @@
+{
+  "common": {
+    "readMore": "Leggi di piu",
+    "category": "Categoria",
+    "publishedOn": "Pubblicato il",
+    "learnMoreAbout": "Scopri di piu su",
+    "emailPlaceholder": "Indirizzo email",
+    "paginationNext": "Successiva",
+    "paginationPrevious": "Precedente",
+    "backToHome": "Torna alla Home",
+    "careerJobOverview": "Panoramica",
+    "contactDropdownSearch404": "Nessun risultato",
+    "careerApplyNow": "Candidati ora"
+  },
+  "navigation": {
+    "buttonLabel": "Richiedi preventivo"
+  },
+  "contactInfo": {
+    "locationLabel": "Sede",
+    "location": "Via Campo di Carne, 13, 04100 Latina (LT)",
+    "phoneLabel": "Telefono",
+    "phone": "+39 0776 891292",
+    "emailLabel": "Email",
+    "email": "info@paoluccisrl.com"
+  },
+  "subscription": {
+    "label": "Iscriviti alla newsletter",
+    "term": "Accetto la [privacy policy](/privacy-policy/)"
+  },
+  "integration": {
+    "relatedIntegrationSectionTitle": "Potrebbe interessarti",
+    "backToIntegration": "Torna"
+  },
+  "footer": {
+    "colTitleOne": "Azienda",
+    "colTitleTwo": "Menu",
+    "colTitleThree": "Contatti",
+    "description": "Produzione e posa di infissi in PVC Schuco su misura.",
+    "copyright": "Copyright © 2026 Paolucci SRL. Tutti i diritti riservati."
+  },
+  "footerMenuOne": [
+    {
+      "name": "Azienda",
+      "url": "/azienda/"
+    },
+    {
+      "name": "Contatti",
+      "url": "/contact/"
+    }
+  ],
+  "footerMenuTwo": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Azienda",
+      "url": "/azienda/"
+    },
+    {
+      "name": "Contatti",
+      "url": "/contact/"
+    }
+  ]
+}
