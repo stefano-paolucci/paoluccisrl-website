@@ -94,6 +94,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 {TURNSTILE_SITE_KEY ? (
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 ) : null}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.1/build/css/intlTelInput.css"
+/>
+<script
+  is:inline
+  src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.1/build/js/intlTelInput.min.js"
+  defer></script>
 
 <script>
   import { setMessage } from "@/lib/utils/FormHandle";
@@ -138,6 +146,52 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     };
 
     const normalize = (v: unknown) => String(v ?? "").trim();
+    const phoneInput = getInputByName("Phone") as HTMLInputElement | null;
+    let phoneInputIntl: any = null;
+
+    const waitForIntlPhoneLibrary = async () => {
+      await new Promise<void>((resolve, reject) => {
+        const start = Date.now();
+        const tick = () => {
+          // @ts-ignore
+          if (typeof window.intlTelInput === "function") return resolve();
+          if (Date.now() - start > 8000) {
+            return reject(new Error("intl-tel-input not loaded"));
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      });
+    };
+
+    const initPhoneCountryPicker = async () => {
+      if (!phoneInput) return;
+      try {
+        await waitForIntlPhoneLibrary();
+        // @ts-ignore
+        phoneInputIntl = window.intlTelInput(phoneInput, {
+          initialCountry: "it",
+          preferredCountries: ["it", "fr", "de", "es", "gb", "us"],
+          separateDialCode: true,
+        });
+      } catch (error) {
+        console.error("Phone picker init error:", error);
+      }
+    };
+
+    const composePhoneNumber = (value: string) => {
+      const raw = normalize(value);
+      if (!raw) return "";
+      if (raw.startsWith("+")) {
+        return `+${raw.replace(/[^\d]/g, "")}`;
+      }
+
+      const digits = raw.replace(/[^\d]/g, "");
+      if (!digits) return "";
+
+      const dialCode = phoneInputIntl?.getSelectedCountryData?.()?.dialCode;
+      return dialCode ? `+${dialCode}${digits}` : digits;
+    };
     const isName = (s: string) => /^[a-zA-ZÀ-ÿ\s'-]+$/.test(s);
     const isEmail = (s: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(s);
     const isPhone = (s: string) => /^\+?[0-9\s-]+$/.test(s);
@@ -224,6 +278,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     ensureTurnstileRendered().catch((error) => {
       console.error("Turnstile init error:", error);
     });
+    initPhoneCountryPicker();
 
     form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
@@ -231,7 +286,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       const firstName = normalize(getInputByName("Name")?.value);
       const lastName = normalize(getInputByName("Surname")?.value);
       const email = normalize(getInputByName("Email")?.value);
-      const phone = normalize(getInputByName("Phone")?.value);
+      const phone = composePhoneNumber(
+        (getInputByName("Phone") as HTMLInputElement | null)?.value || "",
+      );
       const message = normalize((getInputByName("Message") as HTMLTextAreaElement | null)?.value);
       const privacy = getCheckboxValue("Privacy");
 
@@ -294,3 +351,40 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     });
   });
 </script>
+
+<style is:global>
+  #contact-form .iti {
+    width: 100%;
+  }
+
+  #contact-form .iti__country-list {
+    max-height: 20rem;
+    border-radius: 0.75rem;
+    border: 1px solid #d9d9df;
+    box-shadow: 0 16px 40px rgba(17, 24, 39, 0.12);
+    margin-top: 0.4rem;
+    z-index: 40;
+  }
+
+  #contact-form .iti__search-input {
+    border-radius: 0.6rem;
+    border: 1px solid #d9d9df;
+    padding: 0.6rem 0.75rem;
+  }
+
+  #contact-form .iti__selected-country {
+    border-radius: 0.65rem 0 0 0.65rem;
+  }
+
+  html[data-theme="dark"] #contact-form .iti__country-list {
+    background: #262a2f;
+    border-color: #42464b;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  html[data-theme="dark"] #contact-form .iti__search-input {
+    background: #1f2327;
+    border-color: #42464b;
+    color: #fff;
+  }
+</style>
