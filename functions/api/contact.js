@@ -101,13 +101,13 @@ async function submitToResend({
       subject,
       reply_to: payload.email,
       html: `
-        <h2>New contact request</h2>
-        <p><strong>First name:</strong> ${escapeHtml(payload.firstName)}</p>
-        <p><strong>Last name:</strong> ${escapeHtml(payload.lastName)}</p>
+        <h2>Nuova richiesta di contatto dal sito</h2>
+        <p><strong>Nome:</strong> ${escapeHtml(payload.firstName)}</p>
+        <p><strong>Cognome:</strong> ${escapeHtml(payload.lastName)}</p>
         <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
-        <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
-        <p><strong>Company:</strong> ${escapeHtml(payload.company || "Private customer")}</p>
-        <p><strong>Privacy accepted:</strong> ${payload.privacy ? "yes" : "no"}</p>
+        <p><strong>Telefono:</strong> ${escapeHtml(payload.phone)}</p>
+
+        <p><strong>Privacy:</strong> ${payload.privacy ? "si" : "no"}</p>
         <p><strong>Message:</strong><br/>${messageHtml}</p>
       `,
     }),
