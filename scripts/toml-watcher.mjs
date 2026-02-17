@@ -25,20 +25,21 @@ function convertTomlToJson() {
   }
 }
 
-/**
- * Run immediately if JSON is missing
- */
-if (!fs.existsSync(outputFilePath)) {
-  // console.log("[toml-watcher] JSON not found. Generating...");
-  convertTomlToJson();
-}
+const args = process.argv.slice(2);
+const once = args.includes("--once") || args.includes("--no-watch");
+const watch = args.includes("--watch") || !once;
+
+// Always generate once at startup to keep `.astro/config.generated.json` in sync.
+convertTomlToJson();
 
 /**
  * Watch TOML file for changes
  */
-fs.watch(configFilePath, (eventType) => {
-  if (eventType === "change") {
-    // console.log("[toml-watcher] TOML file changed. Regenerating...");
-    convertTomlToJson();
-  }
-});
+if (watch) {
+  fs.watch(configFilePath, (eventType) => {
+    if (eventType === "change") {
+      // console.log("[toml-watcher] TOML file changed. Regenerating...");
+      convertTomlToJson();
+    }
+  });
+}
