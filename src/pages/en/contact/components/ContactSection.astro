@@ -101,6 +101,18 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("contact-form") as HTMLFormElement | null;
     if (!form) return;
+    const turnstileContainer = document.getElementById("turnstile-widget") as HTMLElement | null;
+    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+    if (turnstileContainer && submitButton) {
+      const submitRow = submitButton.closest(".col-span-2") as HTMLElement | null;
+      if (submitRow && submitRow.parentElement) {
+        submitRow.parentElement.insertBefore(turnstileContainer, submitRow);
+      } else if (submitButton.parentElement) {
+        submitButton.parentElement.insertBefore(turnstileContainer, submitButton);
+      }
+      turnstileContainer.classList.add("mb-4");
+    }
 
     const honeypot = document.createElement("input");
     honeypot.type = "text";
