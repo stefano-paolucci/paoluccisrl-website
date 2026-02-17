@@ -1,5 +1,100 @@
 const DEFAULT_RESEND_TO = "info@paoluccisrl.com";
 
+const MESSAGES = {
+  it: {
+    errors: {
+      invalidJsonPayload: "Payload JSON non valido.",
+      nameRequired: "Nome obbligatorio.",
+      nameLength: "La lunghezza del nome deve essere tra 2 e 50 caratteri.",
+      nameInvalidChars: "Il nome contiene caratteri non validi.",
+      surnameRequired: "Cognome obbligatorio.",
+      surnameLength: "La lunghezza del cognome deve essere tra 2 e 50 caratteri.",
+      surnameInvalidChars: "Il cognome contiene caratteri non validi.",
+      emailRequired: "Email obbligatoria.",
+      emailInvalid: "Email non valida.",
+      phoneRequired: "Telefono obbligatorio.",
+      phoneLength: "La lunghezza del telefono non è valida.",
+      phoneInvalid: "Il formato del telefono non è valido.",
+      messageRequired: "Messaggio obbligatorio.",
+      messageLength: "Il messaggio deve essere tra 10 e 1000 caratteri.",
+      messageForbiddenChars: "Il messaggio contiene caratteri non consentiti.",
+      privacyRequired: "Il consenso privacy è obbligatorio.",
+      turnstileSecretMissing:
+        "Configurazione server errata: TURNSTILE_SECRET_KEY mancante.",
+      antiSpamTokenMissing: "Token anti-spam mancante.",
+      antiSpamVerificationFailed: "Verifica anti-spam non superata.",
+      antiSpamUnavailable: "Impossibile verificare il controllo anti-spam.",
+      resendApiKeyMissing:
+        "Configurazione server errata: RESEND_API_KEY mancante.",
+      resendFromMissing:
+        "Configurazione server errata: RESEND_FROM_EMAIL (o RESEND_FROM) mancante.",
+      resendRequestFailed: (status) =>
+        `Richiesta Resend fallita con stato ${status}.`,
+      messageDeliveryFailed: "Invio non riuscito. Riprova tra poco.",
+    },
+    email: {
+      defaultSubject: "Nuova richiesta dal sito Paolucci SRL",
+      heading: "Nuova richiesta di contatto dal sito",
+      firstName: "Nome",
+      lastName: "Cognome",
+      email: "Email",
+      phone: "Telefono",
+      company: "Azienda",
+      privacy: "Privacy",
+      message: "Messaggio",
+      privacyYes: "sì",
+      privacyNo: "no",
+      companyFallback: "Privato",
+    },
+  },
+  en: {
+    errors: {
+      invalidJsonPayload: "Invalid JSON payload.",
+      nameRequired: "Name is required.",
+      nameLength: "Name length must be between 2 and 50 characters.",
+      nameInvalidChars: "Name contains invalid characters.",
+      surnameRequired: "Surname is required.",
+      surnameLength: "Surname length must be between 2 and 50 characters.",
+      surnameInvalidChars: "Surname contains invalid characters.",
+      emailRequired: "Email is required.",
+      emailInvalid: "Email is invalid.",
+      phoneRequired: "Phone is required.",
+      phoneLength: "Phone length is invalid.",
+      phoneInvalid: "Phone format is invalid.",
+      messageRequired: "Message is required.",
+      messageLength: "Message length must be between 10 and 1000 characters.",
+      messageForbiddenChars: "Message contains forbidden characters.",
+      privacyRequired: "Privacy consent is required.",
+      turnstileSecretMissing:
+        "Server misconfiguration: TURNSTILE_SECRET_KEY is missing.",
+      antiSpamTokenMissing: "Missing anti-spam token.",
+      antiSpamVerificationFailed: "Anti-spam verification failed.",
+      antiSpamUnavailable: "Unable to verify anti-spam check.",
+      resendApiKeyMissing: "Server misconfiguration: RESEND_API_KEY is missing.",
+      resendFromMissing:
+        "Server misconfiguration: RESEND_FROM_EMAIL (or RESEND_FROM) is missing.",
+      resendRequestFailed: (status) =>
+        `Resend request failed with status ${status}.`,
+      messageDeliveryFailed: "Message delivery failed. Please try again.",
+    },
+    email: {
+      defaultSubject: "New request from Paolucci SRL website",
+      heading: "New contact request",
+      firstName: "First name",
+      lastName: "Last name",
+      email: "Email",
+      phone: "Phone",
+      company: "Company",
+      privacy: "Privacy",
+      message: "Message",
+      privacyYes: "yes",
+      privacyNo: "no",
+      companyFallback: "Private customer",
+    },
+  },
+};
+const SUPPORTED_LANGS = new Set(["it", "en"]);
+
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
     status,
@@ -23,36 +118,58 @@ const escapeHtml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 
-function validatePayload(payload) {
+function detectLang(request, body) {
+  const fromBody = normalize(body?.lang).toLowerCase();
+  if (SUPPORTED_LANGS.has(fromBody)) return fromBody;
+
+  const referer = normalize(request.headers.get("Referer"));
+  if (referer) {
+    try {
+      const { pathname } = new URL(referer);
+      if (pathname === "/en" || pathname.startsWith("/en/")) return "en";
+      if (pathname === "/it" || pathname.startsWith("/it/")) return "it";
+    } catch (error) {}
+  }
+
+  const acceptLanguage = normalize(request.headers.get("Accept-Language")).toLowerCase();
+  if (acceptLanguage.startsWith("en") || acceptLanguage.includes(",en")) {
+    return "en";
+  }
+
+  return "it";
+}
+
+function validatePayload(payload, text) {
   const errors = [];
+  const { errors: messages } = text;
 
-  if (!payload.firstName) errors.push("Name is required.");
+  if (!payload.firstName) errors.push(messages.nameRequired);
   else if (payload.firstName.length < 2 || payload.firstName.length > 50)
-    errors.push("Name length must be between 2 and 50 characters.");
-  else if (!isName(payload.firstName)) errors.push("Name contains invalid characters.");
+    errors.push(messages.nameLength);
+  else if (!isName(payload.firstName)) errors.push(messages.nameInvalidChars);
 
-  if (!payload.lastName) errors.push("Surname is required.");
+  if (!payload.lastName) errors.push(messages.surnameRequired);
   else if (payload.lastName.length < 2 || payload.lastName.length > 50)
-    errors.push("Surname length must be between 2 and 50 characters.");
+    errors.push(messages.surnameLength);
   else if (!isName(payload.lastName))
-    errors.push("Surname contains invalid characters.");
+    errors.push(messages.surnameInvalidChars);
 
-  if (!payload.email) errors.push("Email is required.");
-  else if (!isEmail(payload.email)) errors.push("Email is invalid.");
+  if (!payload.email) errors.push(messages.emailRequired);
+  else if (!isEmail(payload.email)) errors.push(messages.emailInvalid);
 
-  if (!payload.phone) errors.push("Phone is required.");
+  if (!payload.phone) errors.push(messages.phoneRequired);
   else if (payload.phone.length < 8 || payload.phone.length > 20)
-    errors.push("Phone length is invalid.");
+    errors.push(messages.phoneLength);
   else if (!isPhone(payload.phone))
-    errors.push("Phone format is invalid.");
+    errors.push(messages.phoneInvalid);
 
-  if (!payload.message) errors.push("Message is required.");
+  if (!payload.message) errors.push(messages.messageRequired);
   else if (payload.message.length < 10 || payload.message.length > 1000)
-    errors.push("Message length must be between 10 and 1000 characters.");
+    errors.push(messages.messageLength);
   else if (hasDangerousMessageChars(payload.message))
-    errors.push("Message contains forbidden characters.");
+    errors.push(messages.messageForbiddenChars);
 
-  if (!payload.privacy) errors.push("Privacy consent is required.");
+  if (!payload.privacy) errors.push(messages.privacyRequired);
 
   return errors;
 }
@@ -87,8 +204,14 @@ async function submitToResend({
   to,
   subject,
   payload,
+  text,
 }) {
   const messageHtml = escapeHtml(payload.message).replaceAll("\n", "<br/>");
+  const company = payload.company || text.email.companyFallback;
+  const privacy = payload.privacy
+    ? text.email.privacyYes
+    : text.email.privacyNo;
+
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -101,14 +224,14 @@ async function submitToResend({
       subject,
       reply_to: payload.email,
       html: `
-        <h2>Nuova richiesta di contatto dal sito</h2>
-        <p><strong>Nome:</strong> ${escapeHtml(payload.firstName)}</p>
-        <p><strong>Cognome:</strong> ${escapeHtml(payload.lastName)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
-        <p><strong>Telefono:</strong> ${escapeHtml(payload.phone)}</p>
-
-        <p><strong>Privacy:</strong> ${payload.privacy ? "si" : "no"}</p>
-        <p><strong>Message:</strong><br/>${messageHtml}</p>
+        <h2>${escapeHtml(text.email.heading)}</h2>
+        <p><strong>${escapeHtml(text.email.firstName)}:</strong> ${escapeHtml(payload.firstName)}</p>
+        <p><strong>${escapeHtml(text.email.lastName)}:</strong> ${escapeHtml(payload.lastName)}</p>
+        <p><strong>${escapeHtml(text.email.email)}:</strong> ${escapeHtml(payload.email)}</p>
+        <p><strong>${escapeHtml(text.email.phone)}:</strong> ${escapeHtml(payload.phone)}</p>
+        <p><strong>${escapeHtml(text.email.company)}:</strong> ${escapeHtml(company)}</p>
+        <p><strong>${escapeHtml(text.email.privacy)}:</strong> ${escapeHtml(privacy)}</p>
+        <p><strong>${escapeHtml(text.email.message)}:</strong><br/>${messageHtml}</p>
       `,
     }),
   });
@@ -128,27 +251,29 @@ async function submitToResend({
       result?.message ||
         result?.error ||
         errorFromArray ||
-        `Resend request failed with status ${response.status}`,
+        text.errors.resendRequestFailed(response.status),
     );
   }
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+  let text = MESSAGES[detectLang(request, null)];
 
   let body = null;
   try {
     body = await request.json();
   } catch (error) {
-    return json({ error: "Invalid JSON payload." }, 400);
+    return json({ error: text.errors.invalidJsonPayload }, 400);
   }
+  text = MESSAGES[detectLang(request, body)];
 
   const payload = {
     firstName: normalize(body?.firstName),
     lastName: normalize(body?.lastName),
     email: normalize(body?.email),
     phone: normalize(body?.phone),
-    company: normalize(body?.company) || "Private customer",
+    company: normalize(body?.company),
     message: normalize(body?.message),
     privacy: Boolean(body?.privacy),
     honeypot: normalize(body?.honeypot),
@@ -160,21 +285,18 @@ export async function onRequestPost(context) {
     return json({ ok: true }, 200);
   }
 
-  const validationErrors = validatePayload(payload);
+  const validationErrors = validatePayload(payload, text);
   if (validationErrors.length > 0) {
     return json({ error: validationErrors[0] }, 400);
   }
 
   const turnstileSecret = normalize(env.TURNSTILE_SECRET_KEY);
   if (!turnstileSecret) {
-    return json(
-      { error: "Server misconfiguration: TURNSTILE_SECRET_KEY is missing." },
-      500,
-    );
+    return json({ error: text.errors.turnstileSecretMissing }, 500);
   }
 
   if (!payload.turnstileToken) {
-    return json({ error: "Missing anti-spam token." }, 400);
+    return json({ error: text.errors.antiSpamTokenMissing }, 400);
   }
 
   try {
@@ -185,11 +307,11 @@ export async function onRequestPost(context) {
     );
 
     if (!verifyResult?.success) {
-      return json({ error: "Anti-spam verification failed." }, 400);
+      return json({ error: text.errors.antiSpamVerificationFailed }, 400);
     }
   } catch (error) {
     console.error("Turnstile verification error:", error);
-    return json({ error: "Unable to verify anti-spam check." }, 502);
+    return json({ error: text.errors.antiSpamUnavailable }, 502);
   }
 
   const resendApiKey = normalize(env.RESEND_API_KEY);
@@ -199,24 +321,14 @@ export async function onRequestPost(context) {
     normalize(env.RESEND_TO_EMAIL) ||
     normalize(env.RESEND_TO) ||
     DEFAULT_RESEND_TO;
-  const subject =
-    normalize(env.RESEND_SUBJECT) || "New request from Paolucci SRL website";
+  const subject = normalize(env.RESEND_SUBJECT) || text.email.defaultSubject;
 
   if (!resendApiKey) {
-    return json(
-      { error: "Server misconfiguration: RESEND_API_KEY is missing." },
-      500,
-    );
+    return json({ error: text.errors.resendApiKeyMissing }, 500);
   }
 
   if (!resendFrom) {
-    return json(
-      {
-        error:
-          "Server misconfiguration: RESEND_FROM_EMAIL (or RESEND_FROM) is missing.",
-      },
-      500,
-    );
+    return json({ error: text.errors.resendFromMissing }, 500);
   }
 
   try {
@@ -226,6 +338,7 @@ export async function onRequestPost(context) {
       to: resendTo,
       subject,
       payload,
+      text,
     });
     return json({ ok: true }, 200);
   } catch (error) {
@@ -233,7 +346,7 @@ export async function onRequestPost(context) {
     const errorMessage =
       error instanceof Error && error.message
         ? error.message
-        : "Message delivery failed. Please try again.";
+        : text.errors.messageDeliveryFailed;
     return json({ error: errorMessage }, 502);
   }
 }
