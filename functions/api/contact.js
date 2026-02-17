@@ -62,7 +62,7 @@ const MESSAGES = {
       phoneLength: "Phone length is invalid.",
       phoneInvalid: "Phone format is invalid.",
       messageRequired: "Message is required.",
-      messageLength: "Message length must be between 10 and 1000 characters.",
+      messageLength: "Message length must be between 10 and 1000 characters",
       messageForbiddenChars: "Message contains forbidden characters.",
       privacyRequired: "Privacy consent is required.",
       turnstileSecretMissing:
