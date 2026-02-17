@@ -166,26 +166,31 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       return errors;
     };
 
-    // --- Turnstile invisible: render una volta, execute a ogni submit ---
+    // --- Turnstile: render una volta, token via callback ---
     const siteKey =
       (
         document.getElementById("turnstile-widget") as HTMLElement | null
       )?.dataset.siteKey || "";
     let widgetId: string | null = null;
-    let turnstileExecuting = false;
-    let pendingResolve: ((t: string) => void) | null = null;
-    let pendingReject: ((e: any) => void) | null = null;
+    let lastTurnstileToken = "";
 
     const ensureTurnstileRendered = async () => {
       if (!siteKey) throw new Error("Missing Turnstile site key");
       if (widgetId) return widgetId;
 
-      // Aspetta che turnstile sia disponibile
+      // Aspetta che turnstile sia disponibile e pronto
       await new Promise<void>((resolve, reject) => {
         const start = Date.now();
         const tick = () => {
           // @ts-ignore
-          if (typeof window.turnstile !== "undefined") return resolve();
+          if (
+            typeof window.turnstile !== "undefined" &&
+            typeof window.turnstile.ready === "function"
+          ) {
+            // @ts-ignore
+            window.turnstile.ready(() => resolve());
+            return;
+          }
           if (Date.now() - start > 8000) return reject(new Error("Turnstile not loaded"));
           requestAnimationFrame(tick);
         };
@@ -195,24 +200,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       // @ts-ignore
       widgetId = window.turnstile.render("#turnstile-widget", {
         sitekey: siteKey,
-        execution: "execute",
         callback: (token: string) => {
-          turnstileExecuting = false;
-          if (pendingResolve) pendingResolve(token);
-          pendingResolve = null;
-          pendingReject = null;
+          lastTurnstileToken = token;
         },
         "error-callback": () => {
-          turnstileExecuting = false;
-          if (pendingReject) pendingReject(new Error("Turnstile error"));
-          pendingResolve = null;
-          pendingReject = null;
+          lastTurnstileToken = "";
         },
         "expired-callback": () => {
-          turnstileExecuting = false;
-          if (pendingReject) pendingReject(new Error("Turnstile token expired"));
-          pendingResolve = null;
-          pendingReject = null;
+          lastTurnstileToken = "";
         },
       });
 
@@ -221,44 +216,10 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
     const getTurnstileToken = async () => {
       const id = await ensureTurnstileRendered();
-
-      return await new Promise<string>((resolve, reject) => {
-        pendingResolve = resolve;
-        pendingReject = reject;
-
-        const timeout = setTimeout(() => {
-          turnstileExecuting = false;
-          pendingResolve = null;
-          pendingReject = null;
-          reject(new Error("Turnstile timeout"));
-        }, 10000);
-
-        const wrappedResolve = (token: string) => {
-          clearTimeout(timeout);
-          resolve(token);
-        };
-        const wrappedReject = (e: any) => {
-          clearTimeout(timeout);
-          reject(e);
-        };
-
-        pendingResolve = wrappedResolve;
-        pendingReject = wrappedReject;
-
-        if (turnstileExecuting) {
-          wrappedReject(new Error("Turnstile already executing"));
-          return;
-        }
-
-        turnstileExecuting = true;
-        try {
-          // @ts-ignore
-          window.turnstile.execute(id);
-        } catch (error) {
-          turnstileExecuting = false;
-          wrappedReject(error);
-        }
-      });
+      // @ts-ignore
+      const token = lastTurnstileToken || window.turnstile.getResponse(id);
+      if (!token) throw new Error("Turnstile token missing");
+      return token;
     };
 
     // --- Submit handler (sostituisce provider/netlify/formspree ecc.) ---
@@ -303,6 +264,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
+          lastTurnstileToken = "";
+          if (widgetId && typeof window !== "undefined" && (window as any).turnstile) {
+            // @ts-ignore
+            window.turnstile.reset(widgetId);
+          }
           setMessage(data?.error || "Invio non riuscito. Riprova tra poco.", false, false, form);
           return;
         }
@@ -310,9 +276,19 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         // Success
         form.reset();
         honeypot.value = "";
+        lastTurnstileToken = "";
+        if (widgetId && typeof window !== "undefined" && (window as any).turnstile) {
+          // @ts-ignore
+          window.turnstile.reset(widgetId);
+        }
         setMessage("Richiesta inviata correttamente. Ti ricontatteremo al più presto.", true, false, form);
       } catch (err) {
-        setMessage("Errore di connessione o verifica antispam. Riprova.", false, false, form);
+        console.error("Contact submit error:", err);
+        const message =
+          err instanceof Error && err.message === "Turnstile token missing"
+            ? "Completa la verifica antispam e riprova."
+            : "Errore di connessione o verifica antispam. Riprova.";
+        setMessage(message, false, false, form);
       }
     });
   });
