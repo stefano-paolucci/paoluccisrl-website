@@ -215,6 +215,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       return token;
     };
 
+    // Render immediato del widget: l'utente completa l'antispam prima del submit.
+    ensureTurnstileRendered().catch((error) => {
+      console.error("Turnstile init error:", error);
+    });
+
     // --- Submit handler (sostituisce provider/netlify/formspree ecc.) ---
     form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();

@@ -207,6 +207,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       return token;
     };
 
+    // Render widget on load so anti-spam is completed before submit.
+    ensureTurnstileRendered().catch((error) => {
+      console.error("Turnstile init error:", error);
+    });
+
     form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
 
