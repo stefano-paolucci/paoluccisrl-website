@@ -75,12 +75,14 @@ async function verifyTurnstile(secretKey, token, remoteIp) {
   return await response.json();
 }
 
-async function submitToFormSubmit(endpoint, payload, subject) {
+async function submitToFormSubmit(endpoint, payload, subject, headers = {}) {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(headers.origin ? { Origin: headers.origin } : {}),
+      ...(headers.referer ? { Referer: headers.referer } : {}),
     },
     body: JSON.stringify({
       _subject: subject,
@@ -98,15 +100,21 @@ async function submitToFormSubmit(endpoint, payload, subject) {
     }),
   });
 
-  if (!response.ok) {
-    throw new Error(`FormSubmit request failed with status ${response.status}`);
-  }
-
   let result = null;
+  let rawResponse = "";
   try {
     result = await response.json();
   } catch (error) {
+    rawResponse = await response.text().catch(() => "");
     result = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result?.message ||
+        rawResponse ||
+        `FormSubmit request failed with status ${response.status}`,
+    );
   }
 
   if (result && result.success !== "true" && result.success !== true) {
@@ -179,11 +187,17 @@ export async function onRequestPost(context) {
     normalize(env.FORMSUBMIT_SUBJECT) || "New request from Paolucci SRL website";
 
   try {
-    await submitToFormSubmit(endpoint, payload, subject);
+    await submitToFormSubmit(endpoint, payload, subject, {
+      origin: request.headers.get("Origin") || "",
+      referer: request.headers.get("Referer") || "",
+    });
     return json({ ok: true }, 200);
   } catch (error) {
     console.error("Form submission error:", error);
-    return json({ error: "Message delivery failed. Please try again." }, 502);
+    const errorMessage =
+      error instanceof Error && error.message
+        ? error.message
+        : "Message delivery failed. Please try again.";
+    return json({ error: errorMessage }, 502);
   }
 }
-
