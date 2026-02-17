@@ -178,19 +178,12 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       if (!siteKey) throw new Error("Missing Turnstile site key");
       if (widgetId) return widgetId;
 
-      // Aspetta che turnstile sia disponibile e pronto
+      // Aspetta che turnstile sia disponibile
       await new Promise<void>((resolve, reject) => {
         const start = Date.now();
         const tick = () => {
           // @ts-ignore
-          if (
-            typeof window.turnstile !== "undefined" &&
-            typeof window.turnstile.ready === "function"
-          ) {
-            // @ts-ignore
-            window.turnstile.ready(() => resolve());
-            return;
-          }
+          if (typeof window.turnstile !== "undefined") return resolve();
           if (Date.now() - start > 8000) return reject(new Error("Turnstile not loaded"));
           requestAnimationFrame(tick);
         };
