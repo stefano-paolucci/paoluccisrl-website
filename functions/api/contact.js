@@ -139,6 +139,11 @@ function detectLang(request, body) {
   return "it";
 }
 
+function getText(request, body = null) {
+  const lang = detectLang(request, body);
+  return MESSAGES[lang] || MESSAGES.it;
+}
+
 function validatePayload(payload, text) {
   const errors = [];
   const { errors: messages } = text;
@@ -258,15 +263,15 @@ async function submitToResend({
 
 export async function onRequestPost(context) {
   const { request, env } = context;
-  let text = MESSAGES[detectLang(request, null)];
+  const fallbackText = getText(request);
 
   let body = null;
   try {
     body = await request.json();
   } catch (error) {
-    return json({ error: text.errors.invalidJsonPayload }, 400);
+    return json({ error: fallbackText.errors.invalidJsonPayload }, 400);
   }
-  text = MESSAGES[detectLang(request, body)];
+  const text = getText(request, body);
 
   const payload = {
     firstName: normalize(body?.firstName),

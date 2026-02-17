@@ -101,6 +101,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("contact-form") as HTMLFormElement | null;
     if (!form) return;
+    form.noValidate = true;
     const turnstileContainer = document.getElementById("turnstile-widget") as HTMLElement | null;
     const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
