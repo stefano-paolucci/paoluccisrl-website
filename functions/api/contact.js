@@ -1,5 +1,4 @@
-const DEFAULT_FORMSUBMIT_ENDPOINT =
-  "https://formsubmit.co/ajax/info@paoluccisrl.com";
+const DEFAULT_RESEND_TO = "info@paoluccisrl.com";
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -16,6 +15,13 @@ const isEmail = (value) =>
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value);
 const isPhone = (value) => /^\+?[0-9\s-]+$/.test(value);
 const hasDangerousMessageChars = (value) => /[<>{}[\]`\\]/.test(value);
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 
 function validatePayload(payload) {
   const errors = [];
@@ -75,50 +81,55 @@ async function verifyTurnstile(secretKey, token, remoteIp) {
   return await response.json();
 }
 
-async function submitToFormSubmit(endpoint, payload, subject, headers = {}) {
-  const response = await fetch(endpoint, {
+async function submitToResend({
+  apiKey,
+  from,
+  to,
+  subject,
+  payload,
+}) {
+  const messageHtml = escapeHtml(payload.message).replaceAll("\n", "<br/>");
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      ...(headers.origin ? { Origin: headers.origin } : {}),
-      ...(headers.referer ? { Referer: headers.referer } : {}),
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      _subject: subject,
-      _template: "table",
-      _captcha: "false",
-      _replyto: payload.email,
-      firstName: payload.firstName,
-      lastName: payload.lastName,
-      email: payload.email,
-      phone: payload.phone,
-      company: payload.company || "Private customer",
-      message: payload.message,
-      privacyAccepted: payload.privacy ? "yes" : "no",
-      source: "Website contact form",
+      from,
+      to: [to],
+      subject,
+      reply_to: payload.email,
+      html: `
+        <h2>New contact request</h2>
+        <p><strong>First name:</strong> ${escapeHtml(payload.firstName)}</p>
+        <p><strong>Last name:</strong> ${escapeHtml(payload.lastName)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
+        <p><strong>Company:</strong> ${escapeHtml(payload.company || "Private customer")}</p>
+        <p><strong>Privacy accepted:</strong> ${payload.privacy ? "yes" : "no"}</p>
+        <p><strong>Message:</strong><br/>${messageHtml}</p>
+      `,
     }),
   });
 
   let result = null;
-  let rawResponse = "";
   try {
     result = await response.json();
   } catch (error) {
-    rawResponse = await response.text().catch(() => "");
     result = null;
   }
 
   if (!response.ok) {
+    const errorFromArray = Array.isArray(result?.errors)
+      ? result.errors.map((item) => item?.message).filter(Boolean).join(", ")
+      : "";
     throw new Error(
       result?.message ||
-        rawResponse ||
-        `FormSubmit request failed with status ${response.status}`,
+        result?.error ||
+        errorFromArray ||
+        `Resend request failed with status ${response.status}`,
     );
-  }
-
-  if (result && result.success !== "true" && result.success !== true) {
-    throw new Error(result.message || "FormSubmit rejected the request.");
   }
 }
 
@@ -181,15 +192,40 @@ export async function onRequestPost(context) {
     return json({ error: "Unable to verify anti-spam check." }, 502);
   }
 
-  const endpoint =
-    normalize(env.FORMSUBMIT_ENDPOINT) || DEFAULT_FORMSUBMIT_ENDPOINT;
+  const resendApiKey = normalize(env.RESEND_API_KEY);
+  const resendFrom =
+    normalize(env.RESEND_FROM_EMAIL) || normalize(env.RESEND_FROM);
+  const resendTo =
+    normalize(env.RESEND_TO_EMAIL) ||
+    normalize(env.RESEND_TO) ||
+    DEFAULT_RESEND_TO;
   const subject =
-    normalize(env.FORMSUBMIT_SUBJECT) || "New request from Paolucci SRL website";
+    normalize(env.RESEND_SUBJECT) || "New request from Paolucci SRL website";
+
+  if (!resendApiKey) {
+    return json(
+      { error: "Server misconfiguration: RESEND_API_KEY is missing." },
+      500,
+    );
+  }
+
+  if (!resendFrom) {
+    return json(
+      {
+        error:
+          "Server misconfiguration: RESEND_FROM_EMAIL (or RESEND_FROM) is missing.",
+      },
+      500,
+    );
+  }
 
   try {
-    await submitToFormSubmit(endpoint, payload, subject, {
-      origin: request.headers.get("Origin") || "",
-      referer: request.headers.get("Referer") || "",
+    await submitToResend({
+      apiKey: resendApiKey,
+      from: resendFrom,
+      to: resendTo,
+      subject,
+      payload,
     });
     return json({ ok: true }, 200);
   } catch (error) {
