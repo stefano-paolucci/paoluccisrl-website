@@ -119,8 +119,18 @@ const escapeHtml = (value) =>
     .replaceAll("'", "&#39;");
 
 function detectLang(request, body) {
-  const fromBody = normalize(body?.lang).toLowerCase();
-  if (SUPPORTED_LANGS.has(fromBody)) return fromBody;
+  const normalizeLang = (value) => {
+    const raw = normalize(value).toLowerCase();
+    if (!raw) return null;
+    const base = raw.split("-")[0];
+    return SUPPORTED_LANGS.has(base) ? base : null;
+  };
+
+  const fromBody = normalizeLang(body?.lang);
+  if (fromBody) return fromBody;
+
+  const fromHeader = normalizeLang(request.headers.get("X-Site-Lang"));
+  if (fromHeader) return fromHeader;
 
   const referer = normalize(request.headers.get("Referer"));
   if (referer) {
@@ -132,8 +142,15 @@ function detectLang(request, body) {
   }
 
   const acceptLanguage = normalize(request.headers.get("Accept-Language")).toLowerCase();
-  if (acceptLanguage.startsWith("en") || acceptLanguage.includes(",en")) {
-    return "en";
+  if (acceptLanguage) {
+    const preferences = acceptLanguage
+      .split(",")
+      .map((item) => item.split(";")[0].trim())
+      .filter(Boolean);
+    for (const preferred of preferences) {
+      const lang = normalizeLang(preferred);
+      if (lang) return lang;
+    }
   }
 
   return "it";
