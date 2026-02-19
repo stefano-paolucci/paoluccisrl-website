@@ -1,6 +1,8 @@
 ---
 const frameDir = "/models/living_1";
 const frameCount = 50;
+const frameStride = 3;
+const frameNumberOffset = 1;
 const storyCenterShift = "0vw";
 const modelTextGap = "clamp(0.6rem, 1.2vw, 1.6rem)";
 const modelCanvasSize = "min(600px, 48vw)";
@@ -126,6 +128,8 @@ const timelineBlocks = storyBlocks.map((block, index) => {
   aria-label="Model parallax story"
   data-frame-dir={frameDir}
   data-frame-count={frameCount}
+  data-frame-stride={frameStride}
+  data-frame-offset={frameNumberOffset}
   data-dead-scroll={deadScrollProgress}
   style={`--story-center-shift:${storyCenterShift};--media-vertical-shift:${mediaVerticalShift};--story-top-safe-band:${storyTopSafeBand};--story-model-size:${modelCanvasSize};--story-model-half:calc(var(--story-model-size) / 2);--story-model-text-gap:${modelTextGap};--story-panel-size:${panelDesktopWidth};--story-composite-shift:calc((var(--story-model-text-gap) + var(--story-panel-size)) / -2);`}>
   <div class="scroll-story__sticky">
@@ -195,6 +199,15 @@ const timelineBlocks = storyBlocks.map((block, index) => {
     const panels = Array.from(root.querySelectorAll("[data-panel]"));
     const frameDir = root.getAttribute("data-frame-dir") || "/models/living_1";
     const frameCount = Number(root.getAttribute("data-frame-count") || 50);
+    const frameStride = Math.max(
+      1,
+      Number(root.getAttribute("data-frame-stride") || 1),
+    );
+    const frameNumberOffset = Math.max(
+      1,
+      Number(root.getAttribute("data-frame-offset") || 1),
+    );
+    const sourceFrameCount = Math.ceil(frameCount / frameStride);
     const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
     const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
     const easeInCubic = (t) => t * t * t;
@@ -209,7 +222,8 @@ const timelineBlocks = storyBlocks.map((block, index) => {
     let lastRenderedFrameIndex = 0;
 
     function framePath(index) {
-      return `${frameDir}/${String(index + 1).padStart(4, "0")}.webp`;
+      const frameNumber = frameNumberOffset + index * frameStride;
+      return `${frameDir}/${String(frameNumber).padStart(4, "0")}.webp`;
     }
 
     function resizeCanvas() {
@@ -239,26 +253,27 @@ const timelineBlocks = storyBlocks.map((block, index) => {
 
     function drawFrameByIndex(index) {
       const idx = Math.round(clamp(index, 0, frameCount - 1));
-      const frame = getBestAvailableFrame(idx);
+      const sourceIndex = Math.floor(idx / frameStride);
+      const frame = getBestAvailableFrame(sourceIndex);
       if (!frame) return;
       drawImageContain(frame);
     }
 
-    function getBestAvailableFrame(targetIndex) {
-      if (frames[targetIndex]) {
-        lastRenderedFrameIndex = targetIndex;
-        return frames[targetIndex];
+    function getBestAvailableFrame(targetSourceIndex) {
+      if (frames[targetSourceIndex]) {
+        lastRenderedFrameIndex = targetSourceIndex;
+        return frames[targetSourceIndex];
       }
 
-      for (let offset = 1; offset < frameCount; offset++) {
-        const prev = targetIndex - offset;
+      for (let offset = 1; offset < sourceFrameCount; offset++) {
+        const prev = targetSourceIndex - offset;
         if (prev >= 0 && frames[prev]) {
           lastRenderedFrameIndex = prev;
           return frames[prev];
         }
 
-        const next = targetIndex + offset;
-        if (next < frameCount && frames[next]) {
+        const next = targetSourceIndex + offset;
+        if (next < sourceFrameCount && frames[next]) {
           lastRenderedFrameIndex = next;
           return frames[next];
         }
@@ -389,7 +404,7 @@ const timelineBlocks = storyBlocks.map((block, index) => {
     }
 
     async function preloadFrames() {
-      const tasks = Array.from({ length: frameCount }, (_, i) => {
+      const tasks = Array.from({ length: sourceFrameCount }, (_, i) => {
         return new Promise((resolve) => {
           const image = new Image();
           image.decoding = "async";
@@ -435,7 +450,7 @@ const timelineBlocks = storyBlocks.map((block, index) => {
       --story-text: #343844;
       --story-muted: #4a4d55;
       --story-paragraph: #4a4d55;
-      --story-height: 430vh;
+      --story-height: 265vh;
       position: relative;
       height: var(--story-height);
       padding: 0 !important;
@@ -564,7 +579,7 @@ const timelineBlocks = storyBlocks.map((block, index) => {
 
     @media (max-width: 1100px) {
       .scroll-story {
-        --story-height: 500vh;
+        --story-height: 305vh;
         --story-top-safe-band: 86px;
       }
 

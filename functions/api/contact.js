@@ -251,8 +251,6 @@ async function submitToResend({
         <p><strong>${escapeHtml(text.email.lastName)}:</strong> ${escapeHtml(payload.lastName)}</p>
         <p><strong>${escapeHtml(text.email.email)}:</strong> ${escapeHtml(payload.email)}</p>
         <p><strong>${escapeHtml(text.email.phone)}:</strong> ${escapeHtml(payload.phone)}</p>
-        <p><strong>${escapeHtml(text.email.company)}:</strong> ${escapeHtml(company)}</p>
-        <p><strong>${escapeHtml(text.email.privacy)}:</strong> ${escapeHtml(privacy)}</p>
         <p><strong>${escapeHtml(text.email.message)}:</strong><br/>${messageHtml}</p>
       `,
     }),

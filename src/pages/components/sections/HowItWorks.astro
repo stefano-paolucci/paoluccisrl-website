@@ -39,19 +39,22 @@ const steps = [
         Un percorso chiaro
       </p>
 
-      <h2 class="hiw-main mt-4 text-[clamp(1.8rem,3.3vw,3.1rem)] leading-[1.08] font-semibold tracking-[-0.01em]">
-        Tre fasi. Un unico obiettivo: la tua tranquillità.
+      <h2 class="hiw-main mt-4 text-[clamp(1.8rem,3.3vw,3.1rem)] leading-[1.50] font-semibold tracking-[-0.01em]">
+        Tre fasi. Un unico obiettivo:<br/>la tua tranquillità.
       </h2>
 
-      <p class="hiw-muted mx-auto mt-4 max-w-3xl text-base leading-relaxed sm:text-lg">
+      <p class="hiw-muted mx-auto mt-4 max-w-4xl text-base leading-relaxed text-xl">
        Dalla prima consulenza all’assistenza post-vendita, restiamo al tuo fianco in ogni passaggio.
       </p>
     </div>
 
     <!-- Steps -->
     <div class="mt-12 grid gap-6 md:grid-cols-3">
-      {steps.map((s) => (
-        <article class="how-it-works__card relative rounded-3xl border p-8">
+      {steps.map((s, index) => (
+        <article
+          data-step-reveal
+          data-reveal-direction={index % 2 === 0 ? "left" : "right"}
+          class="how-it-works__card relative rounded-3xl border p-8">
           <div class="flex flex-col items-center text-center">
             <!-- Big icon -->
             <div class="how-it-works__icon-shell grid h-20 w-20 place-items-center rounded-3xl border">
@@ -130,13 +133,61 @@ const steps = [
 
     <!-- Bottom note (short, no links/buttons) -->
     <div class="mx-auto mt-10 max-w-4xl text-center">
-      <p class="hiw-muted text-sm leading-relaxed sm:text-base">
+      <p class="hiw-muted text-sm leading-relaxed text-xl">
         Il risultato è semplice: <strong class="hiw-main">più comfort, più precisione, più durata</strong>.<br/>
         Un metodo pensato per chi vuole infissi affidabili, belli e performanti.
       </p>
     </div>
   </div>
 </div>
+
+<script is:inline>
+  (() => {
+    const section = document.querySelector(".how-it-works");
+    if (!section) return;
+
+    const cards = Array.from(section.querySelectorAll("[data-step-reveal]"));
+    if (!cards.length) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cards.forEach((card) => card.classList.add("is-visible"));
+      return;
+    }
+
+    cards.forEach((card) => {
+      const direction = card.getAttribute("data-reveal-direction");
+      card.style.setProperty(
+        "--step-reveal-x",
+        direction === "right" ? "36px" : "-36px",
+      );
+    });
+
+    section.classList.add("step-reveal-ready");
+
+    let hasTriggered = false;
+    const startDelay = 700;
+    const stepDelay = 320;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || hasTriggered) return;
+          hasTriggered = true;
+
+          cards.forEach((card, index) => {
+            window.setTimeout(() => {
+              card.classList.add("is-visible");
+            }, startDelay + index * stepDelay);
+          });
+
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.28 },
+    );
+
+    observer.observe(section);
+  })();
+</script>
 
 <style>
   .how-it-works {
@@ -149,6 +200,22 @@ const steps = [
     --hiw-icon: rgb(0 0 0 / 0.85);
     --hiw-shadow: 0 10px 35px -20px rgb(0 0 0 / 0.35);
     background: var(--hiw-bg);
+  }
+
+  .how-it-works.step-reveal-ready [data-step-reveal] {
+    opacity: 0;
+    transform: translate3d(var(--step-reveal-x, 0), 30px, 0) scale(0.96);
+    filter: blur(4px);
+  }
+
+  .how-it-works.step-reveal-ready [data-step-reveal].is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+    transition:
+      opacity 760ms ease,
+      transform 820ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 680ms ease;
   }
 
   html[data-theme="dark"] .how-it-works {

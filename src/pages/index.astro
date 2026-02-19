@@ -2,10 +2,12 @@
 import Base from "@/layouts/Base.astro";
 import Section_1 from "@/pages/components/sections/Section_1.astro";
 import HomeHero from "@/pages/components/sections/HomeHero.astro";
+import HomeHeroMobile from "@/pages/components/sections/HomeHero_mobile.astro";
 import HowItWorks from "@/pages/components/sections/HowItWorks.astro";
 import Partner from "@/pages/components/sections/Partner.astro";
 import Features from "@/pages/components/sections/FeaturesSection.astro";
 import BurgerParallaxInsights from "@/pages/components/sections/BurgerParallaxInsights.astro";
+import BurgerParallaxInsightsMobile from "@/pages/components/sections/BurgerParallaxInsights_mobile.astro";
 import BenefitsSection from "@/pages/components/sections/BenefitsSection.astro";
 import ScrollModelStory from "@/pages/components/sections/ScrollModelStory.astro";
 import BonusIncentivesStrip from "@/pages/components/sections/BonusIncentivesStrip.astro";
@@ -21,7 +23,14 @@ import banner2 from "../assets/images/banner_home2.avif";
   homepage={true}
   title="Paolucci SRL | Infissi in PVC Schüco"
   metaDescription="Produciamo infissi in PVC Schüco su misura, con posa qualificata, assistenza dedicata e consulenza completa.">
-  <HomeHero />
+  
+  <div class="hidden lg:block">
+    <HomeHero />
+  </div>
+
+  <div class="lg:hidden">
+    <HomeHeroMobile />
+  </div>
 
   <Section_1 />
 
@@ -37,7 +46,7 @@ import banner2 from "../assets/images/banner_home2.avif";
   </div>
 </section>
 
-  <div class="energy-copy mx-auto mt-10 text-center md:mt-14 lg:mt-20">
+<!--  <div class="energy-copy mx-auto mt-10 text-center md:mt-14 lg:mt-20">
     <h2 class="text-2xl leading-tight font-bold md:text-3xl lg:text-3xl">Più isolamento</h2>
     <h1 class="text-4xl leading-tight font-bold md:text-6xl lg:text-7xl">
       Meno energia sprecata
@@ -49,14 +58,19 @@ import banner2 from "../assets/images/banner_home2.avif";
       <br />
       La casa diventa un luogo di pace, anche nel cuore della città.
     </h5>
-  </div>
+  </div>  --> 
 
   <div class="hidden lg:block">
     <ScrollModelStory />
   </div>
   <BonusIncentivesStrip />
   <Features />
-  <BurgerParallaxInsights />
+  <div class="hidden lg:block">
+    <BurgerParallaxInsights />
+  </div>
+  <div class="lg:hidden">
+    <BurgerParallaxInsightsMobile />
+  </div>
   <HowItWorks />
   <Partner />
   <BenefitsSection />

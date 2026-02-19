@@ -1,0 +1,62 @@
+---
+import CustomButton from "@/components/CustomButton.astro";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+const heroImage = "/src/assets/images/banner_home.avif";
+const overlayConfig = {
+  middleStop: "52%",
+  topStop: "82%",
+  transparentStop: "100%",
+  topOpacity: "0.08",
+  middleOpacity: "0.46",
+  bottomOpacity: "0.88",
+};
+const overlayVars = `--overlay-middle-stop:${overlayConfig.middleStop};--overlay-top-stop:${overlayConfig.topStop};--overlay-transparent-stop:${overlayConfig.transparentStop};--overlay-top-opacity:${overlayConfig.topOpacity};--overlay-middle-opacity:${overlayConfig.middleOpacity};--overlay-bottom-opacity:${overlayConfig.bottomOpacity};`;
+---
+
+<section id="homeHeroMobile" class="relative isolate overflow-hidden lg:hidden">
+  <div class="relative min-h-[400px] w-full">
+    <OptimizedImage
+      src={heroImage}
+      alt="Infissi in PVC Schuco"
+      loading="eager"
+      decoding="async"
+      class="absolute inset-0 z-0 h-full w-full object-cover object-center"
+    />
+
+    <div
+      class="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(0,0,0,var(--overlay-bottom-opacity))_0%,rgba(0,0,0,var(--overlay-middle-opacity))_var(--overlay-middle-stop),rgba(0,0,0,var(--overlay-top-opacity))_var(--overlay-top-stop),transparent_var(--overlay-transparent-stop))]"
+      style={overlayVars}></div>
+
+    <div class="absolute inset-0 z-20 flex items-end">
+      <div class="container pb-6 sm:pb-8 md:pb-10 lg:pb-12">
+        <div class="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center text-white sm:gap-5 md:gap-6 lg:gap-7">
+
+          <span class="rounded-full border border-white/35 bg-white/10 px-4 py-1.5 text-[11px] tracking-[0.14em] uppercase backdrop-blur-sm sm:text-xs md:text-sm lg:text-base">
+            Esperienza e qualità
+          </span>
+
+          <h1 class="m-0 text-5xl leading-[1.05] font-semibold text-white">
+            <strong>Comfort che si sente. Qualità che dura.</strong>
+          </h1>
+
+          <p class="m-0 max-w-[48rem] text-[1.05rem] leading-relaxed text-white/90 sm:text-[1.12rem] md:text-[1.2rem] lg:text-[1.28rem]">
+            Infissi in PVC Schüco progettati per proteggere, isolare e valorizzare ogni ambiente. I nostri infissi migliorano isolamento, comfort e risparmio energetico.
+          </p>
+
+          <div class="w-full max-w-xs sm:max-w-sm md:max-w-md">
+            <CustomButton
+              class="btn-md w-full justify-center"
+              enable={true}
+              label="RICHIEDI PREVENTIVO"
+              variant="fill"
+              url="/contact/"
+              rel=""
+              target=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

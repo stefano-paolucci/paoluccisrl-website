@@ -276,172 +276,6 @@ const sideMedia = {
       color: #0f172a !important;
     }
 
-    @media (max-width: 1279px) {
-      .home-hero-cinematic {
-        height: auto;
-        padding: 0.75rem 1rem 2rem;
-      }
-
-      .home-hero-cinematic__sticky {
-        position: relative;
-        height: auto;
-        overflow: visible;
-      }
-
-      .home-hero-cinematic__stage {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
-        grid-template-rows: auto auto auto;
-        gap: 1rem;
-        align-items: start;
-      }
-
-      .home-hero-cinematic__overlay {
-        display: none;
-      }
-
-      .home-hero-cinematic__main-media,
-      .home-hero-cinematic__card {
-        position: relative;
-        inset: auto;
-        top: auto;
-        right: auto;
-        left: auto;
-        width: 100%;
-        height: auto;
-        min-height: 0;
-        transform: none;
-        opacity: 1;
-        clip-path: none;
-        aspect-ratio: 16 / 10;
-      }
-
-      .home-hero-cinematic__main-media {
-        grid-column: 2;
-        grid-row: 1 / span 2;
-        aspect-ratio: 3 / 4;
-        border-radius: 1rem;
-        overflow: hidden;
-      }
-
-      .home-hero-cinematic__card--left-top {
-        grid-column: 1;
-        grid-row: 1;
-      }
-
-      .home-hero-cinematic__card--left-bottom {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      .home-hero-cinematic__card--right-top {
-        grid-column: 3;
-        grid-row: 1;
-      }
-
-      .home-hero-cinematic__card--right-bottom {
-        grid-column: 3;
-        grid-row: 2;
-      }
-
-      .home-hero-cinematic__content {
-        grid-column: 1 / -1;
-        grid-row: 3;
-        height: auto;
-        min-height: 0;
-        align-items: flex-start;
-        text-align: left;
-        color: #0f172a;
-        transform: none;
-        opacity: 1;
-        filter: none;
-        margin: 0;
-        max-width: 100%;
-        padding: 0.25rem 0 0.5rem;
-      }
-
-      .home-hero-cinematic__content p {
-        color: rgb(15 23 42 / 0.84);
-      }
-
-      .home-hero-cinematic__eyebrow {
-        border-color: rgb(15 23 42 / 0.16);
-        background: rgb(15 23 42 / 0.06);
-        color: #0f172a;
-      }
-
-      .home-hero-cinematic__actions {
-        justify-content: flex-start;
-      }
-    }
-
-    @media (max-width: 767px) {
-      .home-hero-cinematic {
-        padding: 0.75rem 0.9rem 1.5rem;
-      }
-
-      .home-hero-cinematic__stage {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto;
-        gap: 0.85rem;
-      }
-
-      .home-hero-cinematic__main-media {
-        grid-column: 1;
-        grid-row: 1;
-        aspect-ratio: 4 / 5;
-      }
-
-      .home-hero-cinematic__content {
-        grid-column: 1;
-        grid-row: 1;
-        align-self: end;
-        z-index: 15;
-        color: #fff;
-        padding: 1rem;
-        background: linear-gradient(180deg, rgb(2 6 11 / 0) 15%, rgb(2 6 11 / 0.66) 80%);
-        border-radius: 1rem;
-      }
-
-      .home-hero-cinematic__content p {
-        color: rgb(255 255 255 / 0.9);
-      }
-
-      .home-hero-cinematic__eyebrow {
-        border-color: rgb(255 255 255 / 0.35);
-        background: rgb(255 255 255 / 0.14);
-        color: #fff;
-      }
-
-      .home-hero-cinematic__card--left-top {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      .home-hero-cinematic__card--left-bottom {
-        grid-column: 1;
-        grid-row: 3;
-      }
-
-      .home-hero-cinematic__card--right-top {
-        grid-column: 1;
-        grid-row: 4;
-      }
-
-      .home-hero-cinematic__card--right-bottom {
-        grid-column: 1;
-        grid-row: 5;
-      }
-
-      .home-hero-cinematic__actions {
-        width: 100%;
-      }
-
-      .home-hero-cinematic__actions :global(a.btn) {
-        width: 100%;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .home-hero-cinematic {
         height: auto;
@@ -470,7 +304,6 @@ const sideMedia = {
       const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
       const FINAL_SCROLL_STEPS = 0;
       const STEP_SCROLL_WEIGHT = 0.018;
-      const desktopQuery = window.matchMedia("(min-width: 1280px)");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let ticking = false;
 
@@ -514,7 +347,7 @@ const sideMedia = {
 
       function update() {
         ticking = false;
-        if (!desktopQuery.matches || reducedMotion.matches) {
+        if (reducedMotion.matches) {
           setStaticMode();
           return;
         }
@@ -537,7 +370,6 @@ const sideMedia = {
       update();
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate, { passive: true });
-      desktopQuery.addEventListener("change", requestUpdate);
       reducedMotion.addEventListener("change", requestUpdate);
     }
   </script>

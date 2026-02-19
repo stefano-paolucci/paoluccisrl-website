@@ -5,7 +5,7 @@ import Icons from "@/helpers/Icons.astro";
 const bonusImage = "/images/bonus2.avif";
 ---
 
-<section id="bonusIncentives" class="w-full bg-[#e9ebee] dark:bg-[#2a2c2f]">
+<section id="bonusIncentivesEn" class="w-full bg-[#e9ebee] dark:bg-[#2a2c2f]">
   <div
     class="grid items-stretch grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
     <figure
@@ -14,7 +14,7 @@ const bonusImage = "/images/bonus2.avif";
         bonusImage ? (
           <img
             src={bonusImage}
-            alt="Bonus infissi 2026"
+            alt="Window incentives 2026"
             class="absolute inset-0 h-full w-full object-cover"
             loading="lazy"
             decoding="async"
@@ -30,23 +30,18 @@ const bonusImage = "/images/bonus2.avif";
     <div
       class="order-1 flex flex-col justify-center gap-[0.85rem] px-[clamp(1.25rem,4vw,4rem)] py-[clamp(2rem,3.8vw,4rem)] text-[#262626] dark:text-white lg:order-2">
       <p
-        data-bonus-reveal
         class="m-0 text-xs font-bold tracking-[0.24em] text-[rgb(38_38_38_/_0.64)] uppercase sm:text-[0.78rem] md:text-[0.8rem] lg:text-[0.82rem] dark:text-[rgb(255_255_255_/_0.7)]">
-        Bonus infissi 2026
+        Window incentives 2026
       </p>
-      <h2
-        data-bonus-reveal
-        class="m-0 text-3xl leading-[1.08] font-bold sm:text-4xl md:text-[2.35rem] lg:text-[2.55rem]">
-        Il momento giusto per cambiare infissi è adesso.
+      <h2 class="m-0 text-3xl leading-[1.08] font-bold sm:text-4xl md:text-[2.35rem] lg:text-[2.55rem]">
+        The right time to replace your windows is now.
       </h2>
       <p
-        data-bonus-reveal
         class="m-0 text-[0.96rem] leading-[1.58] text-[rgb(38_38_38_/_0.76)] sm:text-base md:text-[1.05rem] lg:text-[1.08rem] dark:text-[rgb(255_255_255_/_0.82)]">
-        Una sintesi rapida dei bonus disponibili nel 2026.
+        A quick overview of incentives available in 2026.
       </p>
 
       <div
-        data-bonus-reveal
         class="mt-8 mb-8 grid gap-[0.55rem] rounded-2xl border border-[rgb(38_38_38_/_0.16)] bg-[#f6f7f8] p-[0.9rem] dark:border-[rgb(255_255_255_/_0.18)] dark:bg-[#33363a]">
         <article class="m-0 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-[0.65rem]">
           <span
@@ -54,7 +49,7 @@ const bonusImage = "/images/bonus2.avif";
             <Icons icon="House" class="h-4 w-4" />
           </span>
           <p class="m-0 text-sm leading-[1.48] text-[rgb(38_38_38_/_0.76)] sm:text-[0.92rem] md:text-[0.95rem] lg:text-[0.95rem] dark:text-[rgb(255_255_255_/_0.82)]">
-            <strong>Ristrutturazione:</strong> 50% prima casa, 36% altre abitazioni.
+            <strong>Renovation tax relief:</strong> 50% for primary homes, 36% for additional properties.
           </p>
         </article>
 
@@ -64,7 +59,7 @@ const bonusImage = "/images/bonus2.avif";
             <Icons icon="Leaf" class="h-4 w-4" />
           </span>
           <p class="m-0 text-sm leading-[1.48] text-[rgb(38_38_38_/_0.76)] sm:text-[0.92rem] md:text-[0.95rem] lg:text-[0.95rem] dark:text-[rgb(255_255_255_/_0.82)]">
-            <strong>Ecobonus:</strong> fino al 50% con massimale dedicato.
+            <strong>Ecobonus:</strong> up to 50% with a dedicated spending cap.
           </p>
         </article>
 
@@ -74,77 +69,20 @@ const bonusImage = "/images/bonus2.avif";
             <Icons icon="ShieldCheck" class="h-4 w-4" />
           </span>
           <p class="m-0 text-sm leading-[1.48] text-[rgb(38_38_38_/_0.76)] sm:text-[0.92rem] md:text-[0.95rem] lg:text-[0.95rem] dark:text-[rgb(255_255_255_/_0.82)]">
-            <strong>Bonus Sicurezza:</strong> detrazione anche su infissi anti intrusione.
+            <strong>Security Bonus:</strong> tax deductions also apply to anti-intrusion windows.
           </p>
         </article>
       </div>
 
-      <div data-bonus-reveal>
-        <CustomButton
-          class="btn-md w-fit"
-          enable={true}
-          label="Maggiori informazioni"
-          variant="fill"
-          url="/bonus/"
-          rel=""
-          target=""
-        />
-      </div>
+      <CustomButton
+        class="btn-md w-fit"
+        enable={true}
+        label="Learn more"
+        variant="fill"
+        url="/bonus/"
+        rel=""
+        target=""
+      />
     </div>
   </div>
 </section>
-
-<script is:inline>
-  (() => {
-    const section = document.getElementById("bonusIncentives");
-    if (!section) return;
-
-    const items = Array.from(section.querySelectorAll("[data-bonus-reveal]"));
-    if (!items.length) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
-
-    section.classList.add("bonus-reveal-ready");
-
-    let hasTriggered = false;
-    const startDelay = 220;
-    const stepDelay = 160;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || hasTriggered) return;
-          hasTriggered = true;
-
-          items.forEach((item, index) => {
-            window.setTimeout(() => {
-              item.classList.add("is-visible");
-            }, startDelay + index * stepDelay);
-          });
-
-          observer.disconnect();
-        });
-      },
-      { threshold: 0.26 },
-    );
-
-    observer.observe(section);
-  })();
-</script>
-
-<style>
-  #bonusIncentives.bonus-reveal-ready [data-bonus-reveal] {
-    opacity: 0;
-    transform: translateY(-26px);
-  }
-
-  #bonusIncentives.bonus-reveal-ready [data-bonus-reveal].is-visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition:
-      opacity 620ms ease,
-      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-</style>

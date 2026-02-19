@@ -25,6 +25,8 @@
     // Lenis smooth scrolling
     window.__lenis = initLenisSmoothScroll({
       wheelMultiplier: 3,
+      disableOnMobile: true,
+      mobileMaxWidth: 1023,
     });
 
     // Fix: Support horizontal scrolling by using the mouse wheel + shift
@@ -174,7 +176,7 @@
               event.preventDefault();
               this.scrollBy({
                 left: event.deltaY * 3,
-                behavior: "smooth",
+                behavior: isMobileViewport() ? "auto" : "smooth",
               });
             }
           },
@@ -182,6 +184,10 @@
         );
       }
     });
+  }
+
+  function isMobileViewport() {
+    return window.matchMedia("(max-width: 1023px)").matches;
   }
 
   // Creative hover animation for buttons

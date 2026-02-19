@@ -7,6 +7,8 @@ export type LenisSmoothScrollOptions = {
   syncTouch?: boolean;
   syncTouchLerp?: number;
   easing?: (t: number) => number;
+  disableOnMobile?: boolean;
+  mobileMaxWidth?: number;
 };
 
 export function initLenisSmoothScroll(
@@ -14,6 +16,11 @@ export function initLenisSmoothScroll(
 ) {
   if (typeof window === "undefined") return null;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+  const disableOnMobile = options.disableOnMobile ?? true;
+  const mobileMaxWidth = options.mobileMaxWidth ?? 1023;
+  if (disableOnMobile && window.matchMedia(`(max-width: ${mobileMaxWidth}px)`).matches) {
+    return null;
+  }
 
   const lenis = new Lenis({
     duration: options.duration ?? 1.2,

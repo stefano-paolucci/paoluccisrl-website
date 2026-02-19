@@ -8,12 +8,18 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
 <section class="section-noise-benefits !pt-8 text-[#262626] dark:text-white md:!pt-12">
   <div class="container space-y-10 md:space-y-16">
     <div class="mx-auto text-center">
-       <img
-            src="/logos/logo_wide.svg"
-            alt="Paolucci Infissi"
-            class="mx-auto mb-20 mt-0 h-auto w-[300px] opacity-95 sm:w-[340px] md:w-[380px] lg:w-[420px]"
-            loading="eager"
-          />
+      <img
+        src="/logos/logo_wide.svg"
+        alt="Paolucci Infissi"
+        class="section-noise-benefits__logo--light mx-auto mb-20 !mt-20 h-auto w-[300px] opacity-95 md:pt-0! lg:mt-0 xl:mt-0 sm:w-[340px] md:w-[380px] lg:w-[420px]"
+        loading="eager"
+      />
+      <img
+        src="/logos/logo_wide_white.svg"
+        alt="Paolucci Infissi"
+        class="section-noise-benefits__logo--dark mx-auto mb-20 !mt-20 h-auto w-[300px] opacity-95 md:pt-0! lg:mt-0 xl:mt-0 sm:w-[340px] md:w-[380px] lg:w-[420px]"
+        loading="eager"
+      />
       <h1 class="text-4xl leading-tight font-bold text-[#262626] dark:text-white md:text-6xl lg:text-7xl">
         <AnimatedText
           delay={0.5}
@@ -31,7 +37,7 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
     </div>
 
     <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+      <article data-seq-reveal class="rounded-2xl bg-transparent p-6 md:p-8">
         <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
           <img src={SoundOffIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
         </div>
@@ -46,7 +52,7 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
         </p>
       </article>
 
-      <article class="rounded-2xl bg-transparent p-6 md:p-8">
+      <article data-seq-reveal class="rounded-2xl bg-transparent p-6 md:p-8">
         <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
           <img src={WindowSectionIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
         </div>
@@ -61,7 +67,7 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
         </p>
       </article>
 
-      <article class="rounded-2xl bg-transparent p-6 md:p-8 md:col-span-2 xl:col-span-1">
+      <article data-seq-reveal class="rounded-2xl bg-transparent p-6 md:p-8 md:col-span-2 xl:col-span-1">
         <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-dashed border-[#262626]/20 text-xs font-semibold text-[#262626]/60 dark:border-white/30 dark:text-white/75">
           <img src={homeIcon.src} alt="" aria-hidden="true" class="h-8 w-8" />
         </div>
@@ -87,7 +93,64 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
   </div>
 </section>
 
+<script is:inline>
+  (() => {
+    const section = document.querySelector(".section-noise-benefits");
+    if (!section) return;
+
+    const cards = Array.from(section.querySelectorAll("[data-seq-reveal]"));
+    if (!cards.length) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cards.forEach((card) => card.classList.add("is-visible"));
+      return;
+    }
+
+    section.classList.add("reveal-ready");
+
+    let hasTriggered = false;
+    const startDelay = 700;
+    const stepDelay = 340;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || hasTriggered) return;
+          hasTriggered = true;
+
+          cards.forEach((card, index) => {
+            window.setTimeout(() => {
+              card.classList.add("is-visible");
+            }, startDelay + index * stepDelay);
+          });
+
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.28 },
+    );
+
+    observer.observe(section);
+  })();
+</script>
+
 <style>
+  .section-noise-benefits__logo--dark {
+    display: none;
+  }
+
+  .section-noise-benefits.reveal-ready [data-seq-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section-noise-benefits.reveal-ready [data-seq-reveal].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 650ms ease,
+      transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   html[data-theme="light"] .section-noise-benefits,
   html[data-theme="light"] .section-noise-benefits h1,
   html[data-theme="light"] .section-noise-benefits h2,
@@ -108,6 +171,14 @@ import WindowSectionIcon from "@/assets/images/icons/svg/window-section.svg";
   html[data-theme="dark"] .section-noise-benefits h5,
   html[data-theme="dark"] .section-noise-benefits p {
     color: #fff !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits .section-noise-benefits__logo--light {
+    display: none !important;
+  }
+
+  html[data-theme="dark"] .section-noise-benefits .section-noise-benefits__logo--dark {
+    display: block !important;
   }
 
   html[data-theme="light"] .section-noise-benefits img[aria-hidden="true"] {

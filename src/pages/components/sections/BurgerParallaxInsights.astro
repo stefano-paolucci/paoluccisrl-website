@@ -1,22 +1,17 @@
 ---
 import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
-
-const heroImage = "/src/assets/images/banner_home3.avif";
-const TEXT_ENTRY_DELAY_STEPS = 20;
-const SCROLL_STEPS_TOTAL = 200;
-const TEXT_START_OFFSET_VH = 92;
 ---
 
 <section
   id="burgerInsightsIt"
-  data-text-delay-steps={TEXT_ENTRY_DELAY_STEPS}
-  data-scroll-steps-total={SCROLL_STEPS_TOTAL}
-  data-text-start-offset-vh={TEXT_START_OFFSET_VH}
-  class="relative h-auto lg:h-[260svh]">
-  <div class="h-auto min-h-svh overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+  data-text-delay-steps="20"
+  data-scroll-steps-total="200"
+  data-text-start-offset-vh="92"
+  class="relative hidden h-[260svh] lg:block">
+  <div class="sticky top-0 h-svh overflow-hidden">
     <div data-bg class="absolute inset-0 will-change-transform">
       <OptimizedImage
-        src={heroImage}
+        src="/src/assets/images/banner_home3.avif"
         alt=""
         class="size-full object-cover object-center"
         loading="eager"
@@ -28,24 +23,21 @@ const TEXT_START_OFFSET_VH = 92;
     </div>
 
     <div class="relative z-10 h-full">
-      <div class="container mx-auto flex h-full items-center pt-24 lg:pt-0">
+      <div class="container mx-auto flex h-full items-center">
         <div data-content class="mx-auto w-full max-w-[1200px]">
           <h1
-            class="mx-auto max-w-6xl text-center text-3xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            class="mx-auto max-w-6xl text-center text-3xl leading-tight font-bold tracking-tight text-white lg:text-7xl">
             Una scelta che si sente ogni giorno.
           </h1>
           <h2
-            class="mx-auto max-w-4xl text-center text-3xl leading-tight font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            class="mx-auto max-w-4xl text-center text-3xl leading-tight font-bold tracking-tight text-white lg:text-5xl">
             La differenza tra un infisso standard e uno ad alte prestazioni.
           </h2>
 
-          <div
-            class="mx-auto mt-5 grid grid-cols-1 gap-4 lg:mt-7 lg:max-w-[1040px] lg:grid-cols-2">
+          <div class="mx-auto mt-7 grid max-w-[1040px] grid-cols-2 gap-4">
             <article
-              data-card-a
               class="rounded-2xl border border-white/25 bg-black/35 p-6 text-white backdrop-blur-md">
-              <h3
-                class="mb-4 text-xl leading-tight font-semibold text-white sm:text-2xl lg:text-3xl">
+              <h3 class="mb-4 text-xl leading-tight font-semibold text-white lg:text-3xl">
                 Infisso standard
               </h3>
 
@@ -54,18 +46,15 @@ const TEXT_START_OFFSET_VH = 92;
                   <span class="text-xs tracking-wider text-white/85 uppercase">
                     Isolamento termico
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Base
                   </strong>
                 </p>
-
                 <p class="flex flex-col gap-1.5">
                   <span class="text-xs tracking-wider text-white/85 uppercase">
                     Comfort acustico
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Limitato
                   </strong>
                 </p>
@@ -73,10 +62,8 @@ const TEXT_START_OFFSET_VH = 92;
             </article>
 
             <article
-              data-card-main
-              class="order-3 rounded-2xl border border-white/30 bg-[#77B82D] p-6 text-white lg:order-none lg:col-start-2 lg:row-span-2">
-              <h3
-                class="mb-4 text-xl leading-tight font-semibold text-white sm:text-2xl lg:text-3xl">
+              class="rounded-2xl border border-white/30 bg-[#77B82D] p-6 text-white lg:col-start-2 lg:row-span-2">
+              <h3 class="mb-4 text-xl leading-tight font-semibold text-white lg:text-3xl">
                 Infissi ad alte prestazioni
               </h3>
 
@@ -85,25 +72,21 @@ const TEXT_START_OFFSET_VH = 92;
                   <span class="text-xs tracking-wider text-white/85 uppercase">
                     Isolamento termico
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Costante
                   </strong>
                 </p>
-
                 <p class="flex flex-col gap-1.5">
                   <span class="text-xs tracking-wider text-white/85 uppercase">
                     Comfort acustico
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Elevato
                   </strong>
                 </p>
               </div>
 
-              <div
-                class="mt-6 border-t border-white/30 pt-5 text-3xl leading-tight font-extrabold sm:text-4xl lg:text-5xl">
+              <div class="mt-6 border-t border-white/30 pt-5 text-3xl leading-tight font-extrabold lg:text-5xl">
                 +efficienza
                 <br />
                 +comfort
@@ -113,10 +96,8 @@ const TEXT_START_OFFSET_VH = 92;
             </article>
 
             <article
-              data-card-b
-              class="order-2 rounded-2xl border border-white/25 bg-black/35 p-6 text-white backdrop-blur-md lg:order-none">
-              <h3
-                class="mb-4 text-xl leading-tight font-semibold text-white sm:text-3xl lg:text-5xl">
+              class="rounded-2xl border border-white/25 bg-black/35 p-6 text-white backdrop-blur-md">
+              <h3 class="mb-4 text-xl leading-tight font-semibold text-white lg:text-5xl">
                 Risultato
               </h3>
 
@@ -125,18 +106,15 @@ const TEXT_START_OFFSET_VH = 92;
                   <span class="text-xs tracking-wider text-white/80 uppercase">
                     Stabilità interna
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Altalenante
                   </strong>
                 </p>
-
                 <p class="flex flex-col gap-1.5">
                   <span class="text-xs tracking-wider text-white/80 uppercase">
                     Benessere quotidiano
                   </span>
-                  <strong
-                    class="text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl">
+                  <strong class="text-2xl leading-tight font-bold lg:text-4xl">
                     Occasionale
                   </strong>
                 </p>
@@ -155,36 +133,48 @@ const TEXT_START_OFFSET_VH = 92;
     if (!root) return;
 
     const desktopQuery = window.matchMedia("(min-width: 1024px)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
     const bg = root.querySelector("[data-bg]");
     const overlay = root.querySelector("[data-overlay]");
     const content = root.querySelector("[data-content]");
-    const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
-    const ease = (t) => t * t * (3 - 2 * t);
-    const textDelaySteps = Number(root.dataset.textDelaySteps || 8);
-    const totalSteps = Math.max(
-      1,
-      Number(root.dataset.scrollStepsTotal || 100),
-    );
+
+    const clamp = (value, min = 0, max = 1) =>
+      Math.min(max, Math.max(min, value));
+    const smoothstep = (t) => t * t * (3 - 2 * t);
+    const toNumber = (value, fallback) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const textDelaySteps = toNumber(root.dataset.textDelaySteps, 20);
+    const totalSteps = Math.max(1, toNumber(root.dataset.scrollStepsTotal, 200));
     const textStartOffsetVh = clamp(
-      Number(root.dataset.textStartOffsetVh || 92),
+      toNumber(root.dataset.textStartOffsetVh, 92),
       0,
       180,
     );
-    const startOffsetPx = () => window.innerHeight * (textStartOffsetVh / 100);
+
     const textEntryStart = clamp(textDelaySteps / totalSteps, 0, 0.9);
     const textEntryEnd = clamp(textEntryStart + 0.9, textEntryStart + 0.08, 1);
-    let ticking = false;
+    const getTextOffsetPx = () => window.innerHeight * (textStartOffsetVh / 100);
 
-    function range(progress, start, end) {
-      return ease(clamp((progress - start) / Math.max(0.0001, end - start)));
+    let isTicking = false;
+
+    function rangeProgress(progress, start, end) {
+      const localProgress = clamp(
+        (progress - start) / Math.max(0.0001, end - start),
+      );
+      return smoothstep(localProgress);
     }
 
-    function progress() {
+    function getSectionProgress() {
       const rect = root.getBoundingClientRect();
-      const span = Math.max(1, root.offsetHeight - window.innerHeight);
-      const travelled = clamp(-rect.top, 0, span);
-      return travelled / span;
+      const scrollSpan = Math.max(1, root.offsetHeight - window.innerHeight);
+      const travelled = clamp(-rect.top, 0, scrollSpan);
+      return travelled / scrollSpan;
     }
 
     function setInitialState() {
@@ -196,41 +186,32 @@ const TEXT_START_OFFSET_VH = 92;
       }
     }
 
-    function setMobileStatic() {
-      if (bg) bg.style.transform = "scale(1)";
-      if (overlay) overlay.style.opacity = "0.46";
-      if (content) {
-        content.style.opacity = "1";
-        content.style.transform = "translateY(0)";
-      }
-    }
-
-    function render(p) {
-      const bgMotion = range(p, 0, 1);
-      const overlayIn = range(p, 0.0, 0.4);
-      const contentIn = range(p, textEntryStart, textEntryEnd);
+    function render(progress) {
+      const bgMotion = rangeProgress(progress, 0, 1);
+      const overlayIn = rangeProgress(progress, 0, 0.4);
+      const contentIn = rangeProgress(progress, textEntryStart, textEntryEnd);
 
       if (bg) bg.style.transform = `scale(${1 + bgMotion * 0.07})`;
       if (overlay) overlay.style.opacity = String(overlayIn * 0.5);
 
       if (content) {
         content.style.opacity = "1";
-        content.style.transform = `translateY(${(1 - contentIn) * startOffsetPx()}px)`;
+        content.style.transform = `translateY(${(1 - contentIn) * getTextOffsetPx()}px)`;
       }
     }
 
     function update() {
-      ticking = false;
-      if (!desktopQuery.matches || reducedMotion.matches) {
-        setMobileStatic();
+      isTicking = false;
+      if (!desktopQuery.matches || reducedMotionQuery.matches) {
+        setInitialState();
         return;
       }
-      render(progress());
+      render(getSectionProgress());
     }
 
     function requestUpdate() {
-      if (ticking) return;
-      ticking = true;
+      if (isTicking) return;
+      isTicking = true;
       requestAnimationFrame(update);
     }
 
@@ -239,6 +220,6 @@ const TEXT_START_OFFSET_VH = 92;
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate, { passive: true });
     desktopQuery.addEventListener("change", requestUpdate);
-    reducedMotion.addEventListener("change", requestUpdate);
+    reducedMotionQuery.addEventListener("change", requestUpdate);
   })();
 </script>

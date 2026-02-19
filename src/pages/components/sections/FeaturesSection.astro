@@ -4,19 +4,19 @@ import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 
 <section
   id="featuresSectionIt"
-  class="py-14 text-[#262626] md:py-20 dark:text-white mb-30 md:mb-15 sm:mb-5">
+  class="py-14 text-[#262626] md:py-20 dark:text-white  md:mb-15 sm:mb-5 sm:pl-15 sm:pr-15">
   <h1
-    class="mx-auto mb-2 text-center font-bold sm:text-6xl md:text-6xl lg:mb-5 lg:text-7xl">
+    class="mx-auto mb-2 text-center font-bold text-4xl! md:text-6xl! lg:mb-5 lg:text-7xl!">
     Scegliere bene cambia tutto.
   </h1>
   <h2
-    class="mx-auto mb-4 text-center sm:text-6xl md:text-2xl lg:mb-20 lg:text-3xl">
+    class="mx-auto mb-4 text-center text-xl md:text-2xl lg:mb-20 lg:text-3xl">
     Lavoriamo con standard che non accettano compromessi.
   </h2>
   <div class="mx-auto w-full max-w-425 px-4 sm:px-6 lg:px-10">
     <div
       id="featuresCarouselIt"
-      class="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4">
+      class="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:overflow-visible md:scroll-smooth lg:grid-cols-4">
       <article
         class="feature-card block w-full min-w-full snap-center rounded-2xl border border-[#d1d5db] bg-white p-6 text-[#262626] shadow-xs md:min-w-0 dark:border-white/20 dark:bg-[#202224] dark:text-white">
         <OptimizedImage
@@ -159,13 +159,15 @@ import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
     );
 
     const step = () => carousel.clientWidth + 20;
+    const scrollBehavior = () =>
+      window.matchMedia("(max-width: 1023px)").matches ? "auto" : "smooth";
 
     prev?.addEventListener("click", () => {
-      carousel.scrollBy({ left: -step(), behavior: "smooth" });
+      carousel.scrollBy({ left: -step(), behavior: scrollBehavior() });
     });
 
     next?.addEventListener("click", () => {
-      carousel.scrollBy({ left: step(), behavior: "smooth" });
+      carousel.scrollBy({ left: step(), behavior: scrollBehavior() });
     });
   })();
 </script>

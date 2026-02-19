@@ -35,7 +35,7 @@
     @apply mx-auto transition-all duration-300 ease-[cubic-bezier(0.617,1.5,0.68,1)];
 
     > nav {
-      @apply rounded-full border bg-white backdrop-blur-md;
+      @apply rounded-full border bg-white backdrop-blur-md max-lg:rounded-none max-lg:border-0 max-lg:bg-transparent max-lg:backdrop-blur-none;
     }
   }
 }
@@ -244,7 +244,7 @@ html[data-theme="dark"] {
   .header {
     > .container {
       > nav {
-        @apply border-white/10 bg-[#262626];
+        @apply border-white/10 bg-[#262626] max-lg:border-0 max-lg:bg-transparent;
       }
     }
   }

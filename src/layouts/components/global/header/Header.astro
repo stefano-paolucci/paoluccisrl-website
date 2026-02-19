@@ -29,8 +29,10 @@ const { stickyHeader, navigationButton } = config.settings;
   ]}>
   <div class="relative container">
     <nav
-      class="hs-dropdown relative flex items-center justify-between px-2 py-2.5 [--auto-close:inside] [--gpu-acceleration:false] [--strategy:absolute] lg:[--strategy:static]">
-      <Logo />
+      class="hs-dropdown relative flex items-center justify-between px-2 py-2.5 [--auto-close:inside] [--gpu-acceleration:false] [--strategy:absolute] max-lg:justify-end max-lg:p-0 lg:[--strategy:static]">
+      <div class="max-lg:hidden">
+        <Logo />
+      </div>
 
       <ul
         id="nav-menu"
